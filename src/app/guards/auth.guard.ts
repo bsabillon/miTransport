@@ -3,25 +3,35 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } fro
 import { Observable } from 'rxjs';
 import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router){
+  isLogged = false;
+
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    public afAuth: AngularFireAuth,
+    ) {
 
   }
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot):
-     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.authService.isLogged){
-        console.log("user is auth")
+    state: RouterStateSnapshot): boolean {
+      // No borrar authLogged (Importante)!
+      let authLogged = this.authService.isLogged();
+      if (!this.authService.isLogged()) {
+        this.router.navigateByUrl('/login');
+        console.log("Acceso denegado");
+        return false;
+      } else {
         return true;
       }
-      console.log("Acceso denegado");
-      this.router.navigateByUrl('/login');
-      return false;
+      
+      // return this.isLogged;
   }
   
 }
