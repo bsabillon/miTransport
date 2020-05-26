@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding >
+  <img class="icon" src="http://henrymorgan.hmresorts.com/_hm/logo-marca-pais-grande-color-16.png" alt="">
+  
+    <ion-item>
+      <br>
+        <ion-label color="dark" position="floating" > Correo electrónico</ion-label>
+        <ion-input type="text" [(ngModel)]="user.email"  name="email"></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label color="dark" position="floating" > Contraseña</ion-label>
+        <ion-input [(ngModel)]="user.password" type="password" name="password"></ion-input>
+    </ion-item>
+      <br>
+  
+    <ion-button expand="block"  (click)="onLogin()"> Login</ion-button>
+    
+    <ion-button class="NoCuenta" routerLink="/registration" expand="block"  color="light"  routerLink="/register">Crear una cuenta</ion-button>
+
+</ion-content>
