@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button  routerLink="/drivers/add">
+        <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+    <ion-title>Conductores</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar showCancelButton="always"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let driver of drivers">
+    <ion-icon name="car"></ion-icon>
+    <ion-text><strong>{{driver.name}}</strong></ion-text>
+    <ion-row> </ion-row>
+    
+  </ion-item>
+
+
+  
+</ion-content>
+

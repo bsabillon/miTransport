@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Agregar Conductor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #formDriver="ngForm" (ngSubmit)="addDriver(formDriver)"> 
+    <input type="hidden" name="id" [(ngModel)]="this.driversService.selectedDriver.uid"  >
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Nombre </ion-label>
+        <ion-input name="name" type="text" [(ngModel)]="this.driversService.selectedDriver.name" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Correo Electronico </ion-label>
+        <ion-input name="email" type="email" [(ngModel)]="this.driversService.selectedDriver.email"></ion-input>
+    </ion-item>
+    <br>
+    
+    <ion-button  type="submit" expand="block" routerLink="/drivers-home" > Agregar</ion-button>
+
+  </form>
+
+
+</ion-content>

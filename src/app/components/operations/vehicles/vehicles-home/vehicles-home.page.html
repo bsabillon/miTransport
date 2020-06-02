@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button  routerLink="/vehicles/add">
+        <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+    <ion-title>Vehiculos</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar showCancelButton="always"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let vehicle of vehicles">
+    <ion-icon name="car"></ion-icon>
+    <ion-text><strong>{{vehicle.alias}}</strong></ion-text>
+    <ion-row> </ion-row>
+    
+  </ion-item>
+
+
+  
+</ion-content>
+

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Agregar Vehiculo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #formVehicle="ngForm" (ngSubmit)="addVehicle(formVehicle)"> 
+    <input type="hidden" name="id" [(ngModel)]="this.vehiclesService.selectedVehicle.uid"  >
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Alias </ion-label>
+        <ion-input name="alias" type="text" [(ngModel)]="this.vehiclesService.selectedVehicle.alias" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Capacidad </ion-label>
+        <ion-input name="capacity" type="number" [(ngModel)]="this.vehiclesService.selectedVehicle.capacity"></ion-input>
+    </ion-item>
+    <br>
+    
+    <ion-button  type="submit" expand="block" routerLink="/vehicles-home" > Agregar</ion-button>
+
+  </form>
+
+
+</ion-content>

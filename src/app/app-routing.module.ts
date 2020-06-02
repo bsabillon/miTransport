@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'operations',
-    loadChildren: () => import('./components/operations/operations.module').then( m => m.OperationsPageModule),
+    loadChildren: () => import('./components/operations/operationsHome/operations.module').then( m => m.OperationsPageModule),
     canActivate: [AuthGuard]
   },
   {
@@ -46,6 +46,38 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./components/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'vehicles-home',
+    loadChildren: () => import('./components/operations/vehicles/vehicles-home/vehicles-home.module').then( m => m.VehiclesHomePageModule)
+  },
+  {
+    path: 'vehicles/add',
+    loadChildren: () => import('./components/operations/vehicles/add/add.module').then( m => m.AddPageModule)
+  },
+  {
+    path: 'drivers-home',
+    loadChildren: () => import('./components/operations/drivers/drivers-home/drivers-home.module').then( m => m.DriversHomePageModule)
+  },
+  {
+    path: 'drivers/add',
+    loadChildren: () => import('./components/operations/drivers/add/add.module').then( m => m.AddPageModule)
+  },
+  {
+    path: 'trips-home',
+    loadChildren: () => import('./components/operations/trips/trips-home/trips-home.module').then( m => m.TripsHomePageModule)
+  },
+  {
+    path: 'trips/add',
+    loadChildren: () => import('./components/operations/trips/add/add.module').then( m => m.AddPageModule)
+  },
+  {
+    path: 'passengers-home',
+    loadChildren: () => import('./components/operations/passengers/passengers-home/passengers-home.module').then( m => m.PassengersHomePageModule)
+  },
+  {
+    path: 'passengers/add',
+    loadChildren: () => import('./components/operations/passengers/add/add.module').then( m => m.AddPageModule)
   }
 ];
 
