@@ -1,9 +1,30 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>tripsHome</ion-title>
+
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button  routerLink="/trips/add">
+        <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+
+    <ion-title>Viajes</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar showCancelButton="always"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-item *ngFor="let trip of trips">
+    <ion-icon name="car"></ion-icon>
+    <ion-text><strong>{{trip.time}}</strong></ion-text>
+    <ion-row> </ion-row>
+    
+  </ion-item>
 
+
+  
 </ion-content>
+

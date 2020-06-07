@@ -28,4 +28,13 @@ public vehicles: any = [];
     });
   }
 
+  deleteVehicle(vehicleId: string){
+    const confirmacion = confirm('Esta seguro de eliminar?');
+    if(confirmacion){
+      this.vehiclesServices.deleteVehicle(vehicleId);
+    }
+    
+  }
+
+
 }

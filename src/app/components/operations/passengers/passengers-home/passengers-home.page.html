@@ -1,9 +1,30 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>passengersHome</ion-title>
+
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/passengers/add">
+        <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Pasajeros</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar showCancelButton="always"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div *ngFor="let passenger of passengers">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{passenger.name}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p> {{passenger.email}}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
 </ion-content>

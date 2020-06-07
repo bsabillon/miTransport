@@ -7,7 +7,7 @@
 
 <ion-content>
   <form #formVehicle="ngForm" (ngSubmit)="addVehicle(formVehicle)"> 
-    <input type="hidden" name="id" [(ngModel)]="this.vehiclesService.selectedVehicle.uid"  >
+    <input type="hidden" name="id" [(ngModel)]="this.vehiclesService.selectedVehicle.id"  >
     <ion-item>
       <br>
         <ion-label color="dark"  position="floating" > Alias </ion-label>

@@ -1,9 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Agregar Pasajero</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #formPassenger="ngForm" (ngSubmit)="addPassenger(formPassenger)"> 
+    <input type="hidden" name="id" [(ngModel)]="this.passengersServices.selectedPassenger.id"  >
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Nombre </ion-label>
+        <ion-input name="name" type="text" [(ngModel)]="this.passengersServices.selectedPassenger.name" ></ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label color="dark"  position="floating" > Email </ion-label>
+        <ion-input name="email" type="text" [(ngModel)]="this.passengersServices.selectedPassenger.email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Numero Identidad </ion-label>
+        <ion-input name="idNumber" type="text" [(ngModel)]="this.passengersServices.selectedPassenger.idNumber"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Origen </ion-label>
+        <ion-input name="pickUp" type="text" [(ngModel)]="this.passengersServices.selectedPassenger.pickUp"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Destino </ion-label>
+        <ion-input name="drop" type="text" [(ngModel)]="this.passengersServices.selectedPassenger.drop"></ion-input>
+    </ion-item>
+
+    <ion-button  type="submit" expand="block" routerLink="/passengers-home">Enviar</ion-button>
+
+  </form>
+
 
 </ion-content>

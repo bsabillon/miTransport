@@ -1,9 +1,62 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Agregar Viaje</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #formTrip="ngForm" (ngSubmit)="addTrip(formTrip)"> 
+    <input type="hidden" name="id" [(ngModel)]="this.tripsServices.selectedTrip.id"  >
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Recurrencia </ion-label>
+        <ion-input name="recurrency" type="text" [(ngModel)]="this.tripsServices.selectedTrip.recurrency" ></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label color="dark"  position="floating" > Hora </ion-label>
+        <ion-input name="time" type="text" [(ngModel)]="this.tripsServices.selectedTrip.time"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Origen </ion-label>
+        <ion-input name="origin" type="text" [(ngModel)]="this.tripsServices.selectedTrip.origin"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Destino </ion-label>
+        <ion-input name="destination" type="text" [(ngModel)]="this.tripsServices.selectedTrip.destination"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Paradas </ion-label>
+        <ion-input name="stops" type="text" [(ngModel)]="this.tripsServices.selectedTrip.stops"></ion-input>
+    </ion-item>
+
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Conductor </ion-label>
+        <ion-input name="driver" type="text" [(ngModel)]="this.tripsServices.selectedTrip.driver"></ion-input>
+    </ion-item>
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Pasajeros </ion-label>
+        <ion-input name="passengers" type="text" [(ngModel)]="this.tripsServices.selectedTrip.passengers"></ion-input>
+    </ion-item>
+    <ion-item>
+
+        <ion-label color="dark"  position="floating" > Vehiculo </ion-label>
+        <ion-input name="vehicle" type="text" [(ngModel)]="this.tripsServices.selectedTrip.vehicle"></ion-input>
+    </ion-item>
+
+
+
+    <ion-button  type="submit" expand="block" routerLink="/trips-home">Enviar</ion-button>
+
+  </form>
+
 
 </ion-content>
