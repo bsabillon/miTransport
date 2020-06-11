@@ -78,6 +78,14 @@ const routes: Routes = [
   {
     path: 'passengers/add',
     loadChildren: () => import('./components/operations/passengers/add/add.module').then( m => m.AddPageModule)
+  },
+  {
+    path: 'stops-home',
+    loadChildren: () => import('./components/operations/stops/stops-home/stops-home.module').then( m => m.StopsHomePageModule)
+  },
+  {
+    path: 'add',
+    loadChildren: () => import('./components/operations/stops/add/add.module').then( m => m.AddPageModule)
   }
 ];
 
