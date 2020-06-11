@@ -84,7 +84,7 @@ const routes: Routes = [
     loadChildren: () => import('./components/operations/stops/stops-home/stops-home.module').then( m => m.StopsHomePageModule)
   },
   {
-    path: 'add',
+    path: 'stops/add',
     loadChildren: () => import('./components/operations/stops/add/add.module').then( m => m.AddPageModule)
   }
 ];

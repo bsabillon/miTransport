@@ -1,9 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>add</ion-title>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title>Agregar Parada</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #formStop="ngForm" (ngSubmit)="addStop(formStop)"> 
+    <input type="hidden" name="id" [(ngModel)]="this.stopsService.selectedStop.uid"  >
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Alias </ion-label>
+        <ion-input name="alias" type="text" [(ngModel)]="this.stopsService.selectedStop.alias" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <br>
+        <ion-label color="dark"  position="floating" > Coordenadas </ion-label>
+        <ion-input name="coordinates" type="text" [(ngModel)]="this.stopsService.selectedStop.coordinates"></ion-input>
+    </ion-item>
+    <br>
+    
+    <ion-button  type="submit" expand="block" routerLink="/stops-home" > Agregar</ion-button>
+
+  </form>
+
 
 </ion-content>

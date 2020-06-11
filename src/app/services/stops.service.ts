@@ -36,8 +36,8 @@ export class StopsService {
     }));
   }
 
-  getVehicle(stopId: string){
-    this.stopDoc = this.afStore.doc<Stop>(`vehicles/${stopId}`);
+  getStop(stopId: string){
+    this.stopDoc = this.afStore.doc<Stop>(`stops/${stopId}`);
     return this.stop = this.stopDoc.snapshotChanges().pipe(map(action=>{
       if (action.payload.exists == false){
         return null;
@@ -49,20 +49,20 @@ export class StopsService {
     }));
   }
 
-  addVehicle(stop: Stop):void{
+  addStop(stop: Stop):void{
     const id = this.afStore.createId();
     stop.id =id;
     this.stopsCollection.doc(id).set(stop);
   }
 
-  updateVehicle(stop: Stop):void{
+  updateStop(stop: Stop):void{
     let stopId = stop.id;
     this.stopDoc = this.afStore.doc<Stop>
     (`stops/${stopId}`);
     this.stopDoc.update(stop);
   }
 
-  deleteVehicle(stopId: string):void {
+  deleteStop(stopId: string):void {
     this.stopDoc = this.afStore.doc<Stop>(`stops/${stopId}`);
     this.stopDoc.delete(); 
   }
