@@ -27,4 +27,13 @@ export class DriversHomePage implements OnInit {
     });
   }
 
+  deleteDriver(driverId: string){
+    const confirmacion = confirm('Esta seguro de eliminar?');
+    if(confirmacion){
+      this.driversServices.deleteVehicle(driverId);
+    }
+    
+  }
+
+
 }

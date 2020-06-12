@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {User} from '../models/user.class';
+import { Router } from '@angular/router';
+import { AngularFirestoreDocument, AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(public afAuth: AngularFireAuth) {
+private isLog =false;
+  constructor(public afAuth: AngularFireAuth, private router: Router,private afs: AngularFirestore) {
 
    }
 
@@ -21,29 +23,50 @@ async onLogin(user: User) {
   }
 }
 
+async onLogOut(){
+  console.log("logging out");
+  this.afAuth.signOut();
+  this.router.navigateByUrl('/login');
+}
+
 async isLogged(): Promise<boolean> {
-  let islog: boolean;
     await this.afAuth.authState.subscribe((user) => {
       console.log(user);
       if (user != null) {
-        return islog = true;
+        console.log('servicio si');
+        return this.isLog = true;
       } else {
-        return islog = false;
+        console.log('servicio no');
+        return this.isLog = false;
       }
     });
-  return islog;
+  return this.isLog;
 }
 
 async onRegister (user: User){
   try{
-    return await this.afAuth.createUserWithEmailAndPassword(
-      user.email,
-      user.password
-    )
+    return await new Promise ((resolve, reject)=>{
+      this.afAuth.createUserWithEmailAndPassword(
+        user.email,
+        user.password
+      ).then(userData =>{
+        resolve(userData),
+        this.updateUserData(userData.user)
+      })
+    })
   }catch(error){
     console.log('Error al registrar: ', error)
   }
 }
 
+private updateUserData(user){
+  const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
+  const data: User = {
+    id:user.uid,
+    email:user.email,
+    role : 'passenger',
+  }
+  return userRef.set(data,{merge:true})
+}
 
 }
