@@ -1,3 +1,64 @@
 h2 {
     text-align: center;
 }
+
+.validation-errors {
+    font-size: 0.7rem;
+    color: #fff;
+    margin-top: 1px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.btn_eye_icon {
+    position: absolute;
+    z-index: 99;
+    right: 7%;
+    bottom: 10px;
+    background: transparent;
+}
+
+.btn_eye_icon > ion-icon {
+    font-size: 22px;
+    color: #fff;
+}
+
+.btn_eye_icon:focus {
+    outline: none !important;
+}
+
+.register {
+    --border-radius: 18px;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.itemsInputs {
+    --background: rgba(255, 255, 255, 0);
+    z-index: 2;
+}
+
+.itemsInputs > ion-item {
+    --background: rgba(255, 255, 255, 0.3);
+    width: 96%;
+    margin-left: 2%;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 2px;
+}
+
+.itemsInputs > ion-item > ion-icon {
+    margin-left: 4px;
+    margin-right: 4px;
+    color: #fff;
+}
+
+.SiCuenta {
+    width: 100%;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.SiCuenta > h6:focus {
+    outline: none !important;
+}
