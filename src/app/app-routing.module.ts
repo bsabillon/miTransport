@@ -51,7 +51,7 @@ const routes: Routes = [
   {
     path: 'vehicles-home',
     loadChildren: () => import('./components/operations/vehicles/vehicles-home/vehicles-home.module').then( m => m.VehiclesHomePageModule),
-    canActivate: [AuthGuard && AdminGuard ]
+    // canActivate: [AuthGuard && AdminGuard ]
   },
   {
     path: 'vehicles/add',

@@ -3,6 +3,9 @@ import {Router} from '@angular/router';
 import {AuthService } from '../../services/auth.service';
 import {User } from '../../models/user.class';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+// import { threadId } from 'worker_threads';
+import { Storage } from '@ionic/storage';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -14,6 +17,9 @@ export class RegisterPage implements OnInit {
   password: string;
   loginForm: FormGroup;
   validation_messages = {
+    name: [
+      { type: 'required', message: 'El nombre es requerido.' },
+    ],
     email: [
       { type: 'required', message: 'El correo es requerido.' },
       { type: 'pattern', message: 'Introduzca un correo valido.' }
@@ -32,9 +38,16 @@ export class RegisterPage implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router,
+    public alertController: AlertController,
+    public loadingController: LoadingController,
+    private navCtrl: NavController,
+    private storage: Storage,
     public formBuilder: FormBuilder,
     ) {
       this.loginForm = this.formBuilder.group({
+        name: new FormControl('', Validators.compose([
+          Validators.required,
+        ])),
         email: new FormControl('', Validators.compose([
           Validators.required,
           Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
@@ -49,20 +62,66 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  onRegister(){
-    this.user.email = this.loginForm.get('email').value;
-    this.user.password = this.loginForm.get('password').value;
-    this.register();
+
+
+  async onRegister() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Porfavor espere...',
+      // duration: 2000
+    });
+    loading.present();
+    const value = {};
+    value['email'] = this.loginForm.get('email').value;
+    value['password'] = this.loginForm.get('password').value;
+    this.authService.registerUser(value).then(res => {
+      this.user.email = res.user.email;
+      this.user.uid = res.user.uid;
+      this.user.role = 'passenger';
+      this.user.name = this.loginForm.get('name').value;
+      this.storage.set('userAuth', this.user);
+      this.createUser(this.user);
+    }, (error) => {
+      loading.dismiss();
+      // this.errorMessage = error.message;
+      console.log(error);
+      this.presentAlert();
+    });
   }
 
-  async register() {
-    const user = await this.authService.onRegister(this.user);
-
-    if(user){
-      console.log('User created successfully');
-      this.router.navigateByUrl('/home');
-    }
+  createUser(user) {
+    const record = {};
+    record['email'] = user.email;
+    record['name'] = user.name;
+    record['role'] = user.role;
+    this.authService.createUser(record).then(resp => {
+      this.navCtrl.navigateForward('/home');
+    }).catch(error => {
+      console.log(error);
+      this.presentAlert();
+    })
   }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      // cssClass: 'my-custom-class',
+      header: 'Error',
+      // subHeader: 'Subtitle',
+      message: '¡El registro no se pudo realizar!',
+      buttons: ['Entendido']
+    });
+
+    await alert.present();
+  }
+
+  // async register() {
+  //   const user = await this.authService.onRegister(this.user);
+
+  //   if(user){
+  //     console.log('User created successfully');
+  //     this.router.navigateByUrl('/home');
+  //   }
+  // }
 
   togglePasswordMode() {
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';

@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.isLogged();
-    this.authService.isAdmin();
+    // this.authService.isLogged();
+    // this.authService.isAdmin();
    
   }
 }

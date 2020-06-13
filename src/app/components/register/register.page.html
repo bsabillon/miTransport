@@ -15,6 +15,22 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="name" placeholder="Nombre" name="name"></ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div class="error-message"
+          *ngIf="loginForm.get('name').hasError(validation.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
         <ion-icon name="person"></ion-icon>
         <ion-input type="text" formControlName="email" placeholder="Correo electrónico" name="email"></ion-input>
       </ion-item>
