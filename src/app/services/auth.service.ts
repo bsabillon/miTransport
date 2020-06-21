@@ -39,7 +39,7 @@ registerUser(value) {
 }
 
 createUser(record) {
-  return this.afs.collection('users').add(record);
+  return this.afs.collection('users').doc(record.uid).set(record);
 }
 
 getUser(email) {

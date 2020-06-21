@@ -3,8 +3,10 @@
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>User Name</ion-list-header>
-          <ion-note>Company Name</ion-note>
+          <ion-list-header *ngIf="userInfo != null">{{userInfo.name}}</ion-list-header>
+          <ion-list-header *ngIf="userInfo == null">Usuario</ion-list-header>
+          <ion-note *ngIf="userInfo != null">{{userInfo.email}}</ion-note>
+          <ion-note *ngIf="userInfo == null">usuario@transporte.com</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none"
@@ -15,10 +17,10 @@
           </ion-menu-toggle>
         </ion-list>
 
+        <ion-button class="logout" (click)="onLogOut()">
+          Cerrar Sesión
+        </ion-button>
       </ion-content>
-      <ion-button class="logout" (click)="onLogOut()">
-        Cerrar Sesión
-      </ion-button>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>

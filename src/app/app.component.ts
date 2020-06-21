@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {Router} from '@angular/router';
 import {AngularFireAuth} from '@angular/fire/auth';
 import { AuthService } from './services/auth.service';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
+  userInfo: any = [];
   public appPages = [
     {
       title: 'Conducir',
@@ -55,6 +57,7 @@ export class AppComponent implements OnInit {
     private statusBar: StatusBar,
     private authService: AuthService,
     private router: Router,
+    private storage: Storage,
     private afAuth: AngularFireAuth
   ) {
     this.initializeApp();
@@ -74,6 +77,17 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // this.authService.isLogged();
     // this.authService.isAdmin();
-   
+    this.getUser();
+  }
+  
+  ionViewWillEnter() {
+    this.getUser();
+  }
+
+  getUser() {
+    this.storage.get('userAuth').then((data) => {
+      console.log(data);
+      this.userInfo = data;
+    });
   }
 }

@@ -13,6 +13,7 @@ import { NavController, LoadingController, AlertController } from '@ionic/angula
 })
 export class RegisterPage implements OnInit {
   user: User = new User();
+  personType = 'passenger'
   email: string;
   password: string;
   loginForm: FormGroup;
@@ -27,6 +28,11 @@ export class RegisterPage implements OnInit {
     password: [
       { type: 'required', message: 'Contraseña es requerida.' },
       { type: 'minlength', message: 'La contraseña debe tener al menos 6 dígitos.'}
+    ],
+    phone: [
+      { type: 'required', message: 'El celular es requerido.' },
+      { type: 'minlength', message: 'El celular debe tener al menos 8 dígitos.'},
+      // { type: 'pattern', message: 'Solo debe ingresar números.'}
     ]
   };
 
@@ -56,13 +62,22 @@ export class RegisterPage implements OnInit {
           Validators.required,
           Validators.minLength(5),
         ])),
+        phone: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
+        ])),
       });
     }
 
   ngOnInit() {
   }
 
-
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev.detail);
+    this.personType = ev.detail.value;
+    console.log(this.personType);
+  }
 
   async onRegister() {
     const loading = await this.loadingController.create({
@@ -77,10 +92,12 @@ export class RegisterPage implements OnInit {
     this.authService.registerUser(value).then(res => {
       this.user.email = res.user.email;
       this.user.uid = res.user.uid;
-      this.user.role = 'passenger';
+      this.user.role = this.personType;
       this.user.name = this.loginForm.get('name').value;
+      this.user.phone = this.loginForm.get('phone').value;
       this.storage.set('userAuth', this.user);
       this.createUser(this.user);
+      loading.dismiss();
     }, (error) => {
       loading.dismiss();
       // this.errorMessage = error.message;
@@ -91,9 +108,11 @@ export class RegisterPage implements OnInit {
 
   createUser(user) {
     const record = {};
+    record['uid'] = user.uid;
     record['email'] = user.email;
     record['name'] = user.name;
     record['role'] = user.role;
+    record['phone'] = user.phone;
     this.authService.createUser(record).then(resp => {
       this.navCtrl.navigateForward('/home');
     }).catch(error => {
