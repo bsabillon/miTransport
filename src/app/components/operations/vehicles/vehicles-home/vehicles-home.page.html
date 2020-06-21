@@ -1,42 +1,39 @@
 <ion-header>
-  <ion-toolbar color="primary ">
+  <ion-toolbar>
 
-    <ion-back-button slot="start"></ion-back-button>
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-buttons slot="end">
-      <ion-button  routerLink="/vehicles/add">
+      <ion-button routerLink="/vehicles/add">
         <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
       </ion-button>
     </ion-buttons>
 
     <ion-title>Vehiculos</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar showCancelButton="always"></ion-searchbar>
-  </ion-toolbar>
+  <ion-searchbar color="primary" placeholder="Buscar" mode="ios"></ion-searchbar>
 </ion-header>
 
 <ion-content>
   <div *ngFor="let vehicle of vehicles">
 
-    <ion-item-sliding> 
+    <ion-item-sliding>
       <ion-item>
 
-      <ion-card-header>
-        <ion-card-title>{{vehicle.alias}}</ion-card-title>
-      </ion-card-header>
-<ion-card-subtitle> 
-  <p>Capacidad: {{vehicle.capacity}}</p>
-</ion-card-subtitle>
+        <ion-card-header>
+          <ion-card-title>{{vehicle.alias}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-subtitle>
+          <p>Capacidad: {{vehicle.capacity}}</p>
+        </ion-card-subtitle>
 
-  </ion-item>
-  <ion-item-options>
-    <ion-item-option color="danger" (click)="this.deleteVehicle(vehicle.id)" >
-      <ion-icon slot="end" size="large" name="trash"></ion-icon>
-    </ion-item-option>
-  </ion-item-options>
-  </ion-item-sliding>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="this.deleteVehicle(vehicle.id)">
+          <ion-icon slot="end" size="large" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
 
   </div>
 
 </ion-content>
-

@@ -87,7 +87,11 @@ export class AppComponent implements OnInit {
   getUser() {
     this.storage.get('userAuth').then((data) => {
       console.log(data);
-      this.userInfo = data;
+      if (data) {
+        this.userInfo = data;
+      } else {
+        this.userInfo = null;
+      }
     });
   }
 }

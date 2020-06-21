@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService } from '../../services/auth.service';
-import {User } from '../../models/user.class';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.class';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 // import { threadId } from 'worker_threads';
 import { Storage } from '@ionic/storage';
@@ -16,9 +16,13 @@ export class RegisterPage implements OnInit {
   personType = 'passenger'
   email: string;
   password: string;
-  loginForm: FormGroup;
+  registerClientForm: FormGroup;
+  registerAdminForm: FormGroup;
   validation_messages = {
     name: [
+      { type: 'required', message: 'El nombre es requerido.' },
+    ],
+    company: [
       { type: 'required', message: 'El nombre es requerido.' },
     ],
     email: [
@@ -27,11 +31,11 @@ export class RegisterPage implements OnInit {
     ],
     password: [
       { type: 'required', message: 'Contraseña es requerida.' },
-      { type: 'minlength', message: 'La contraseña debe tener al menos 6 dígitos.'}
+      { type: 'minlength', message: 'La contraseña debe tener al menos 6 dígitos.' }
     ],
     phone: [
       { type: 'required', message: 'El celular es requerido.' },
-      { type: 'minlength', message: 'El celular debe tener al menos 8 dígitos.'},
+      { type: 'minlength', message: 'El celular debe tener al menos 8 dígitos.' },
       // { type: 'pattern', message: 'Solo debe ingresar números.'}
     ]
   };
@@ -49,26 +53,47 @@ export class RegisterPage implements OnInit {
     private navCtrl: NavController,
     private storage: Storage,
     public formBuilder: FormBuilder,
-    ) {
-      this.loginForm = this.formBuilder.group({
-        name: new FormControl('', Validators.compose([
-          Validators.required,
-        ])),
-        email: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
-        ])),
-        password: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.minLength(5),
-        ])),
-        phone: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.minLength(8),
-          // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
-        ])),
-      });
-    }
+  ) {
+    this.registerClientForm = this.formBuilder.group({
+      name: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+      ])),
+      phone: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
+      ])),
+    });
+    this.registerAdminForm = this.formBuilder.group({
+      name: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+      ])),
+      phone: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(8),
+        // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
+      ])),
+      company: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+    });
+  }
 
   ngOnInit() {
   }
@@ -86,15 +111,23 @@ export class RegisterPage implements OnInit {
       // duration: 2000
     });
     loading.present();
+    (this.personType == 'passenger') ? console.log(this.registerClientForm.value) : console.log(this.registerAdminForm.value);
     const value = {};
-    value['email'] = this.loginForm.get('email').value;
-    value['password'] = this.loginForm.get('password').value;
+    (this.personType == 'passenger') ? value['email'] = this.registerClientForm.get('email').value 
+    : value['email'] = this.registerAdminForm.get('email').value;
+    (this.personType == 'passenger') ? value['password'] = this.registerClientForm.get('password').value 
+    : value['password'] = this.registerAdminForm.get('password').value;
     this.authService.registerUser(value).then(res => {
       this.user.email = res.user.email;
       this.user.uid = res.user.uid;
       this.user.role = this.personType;
-      this.user.name = this.loginForm.get('name').value;
-      this.user.phone = this.loginForm.get('phone').value;
+      (this.personType == 'passenger') ? this.user.name = this.registerClientForm.get('name').value
+      : this.user.name = this.registerAdminForm.get('name').value;
+      (this.personType == 'passenger') ? this.user.phone = this.registerClientForm.get('phone').value
+      : this.user.phone = this.registerAdminForm.get('phone').value;
+      if (this.personType != 'passenger') {
+        this.user.company = this.registerAdminForm.get('company').value;
+      } 
       this.storage.set('userAuth', this.user);
       this.createUser(this.user);
       loading.dismiss();
@@ -113,6 +146,9 @@ export class RegisterPage implements OnInit {
     record['name'] = user.name;
     record['role'] = user.role;
     record['phone'] = user.phone;
+    if (this.personType != 'passenger') {
+      record['company'] = this.registerAdminForm.get('company').value;
+    } 
     this.authService.createUser(record).then(resp => {
       this.navCtrl.navigateForward('/home');
     }).catch(error => {

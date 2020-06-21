@@ -15,14 +15,14 @@
     <ion-segment-button value="passenger">
       <ion-label>Pasajero</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="driver">
+    <ion-segment-button value="admin">
       <ion-label>Transportista</ion-label>
     </ion-segment-button>
   </ion-segment>
 
   <div [ngSwitch]="personType">
     <div *ngSwitchCase="'passenger'">
-      <form [formGroup]="loginForm" (ngSubmit)="onRegister()">
+      <form [formGroup]="registerClientForm" (ngSubmit)="onRegister()">
         <ion-item class="itemsInputs" lines="none">
           <ion-item lines="none" class="ion-no-padding">
             <ion-icon name="pricetags"></ion-icon>
@@ -33,7 +33,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.name">
             <div class="error-message"
-              *ngIf="loginForm.get('name').hasError(validation.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
+              *ngIf="registerClientForm.get('name').hasError(validation.type) && (registerClientForm.get('name').dirty || registerClientForm.get('name').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
@@ -49,7 +49,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.email">
             <div class="error-message"
-              *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+              *ngIf="registerClientForm.get('email').hasError(validation.type) && (registerClientForm.get('email').dirty || registerClientForm.get('email').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
@@ -69,7 +69,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.password">
             <div class="error-message"
-              *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+              *ngIf="registerClientForm.get('password').hasError(validation.type) && (registerClientForm.get('password').dirty || registerClientForm.get('password').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
@@ -77,7 +77,7 @@
 
         <ion-item class="itemsInputs" lines="none">
           <ion-item lines="none" class="ion-no-padding">
-            <ion-icon name="lock-closed"></ion-icon>
+            <ion-icon name="call"></ion-icon>
             <ion-input formControlName="phone" placeholder="Celular" type="text">
             </ion-input>
           </ion-item>
@@ -86,16 +86,16 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.phone">
             <div class="error-message"
-              *ngIf="loginForm.get('phone').hasError(validation.type) && (loginForm.get('phone').dirty || loginForm.get('phone').touched)">
+              *ngIf="registerClientForm.get('phone').hasError(validation.type) && (registerClientForm.get('phone').dirty || registerClientForm.get('phone').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
         </div>
-        <ion-button class="register" expand="block" type="submit" [disabled]="!loginForm.valid">Registrar</ion-button>
+        <ion-button class="register" expand="block" type="submit" [disabled]="!registerClientForm.valid">Registrar</ion-button>
       </form>
     </div>
-    <div *ngSwitchCase="'driver'">
-      <form [formGroup]="loginForm" (ngSubmit)="onRegister()">
+    <div *ngSwitchCase="'admin'">
+      <form [formGroup]="registerAdminForm" (ngSubmit)="onRegister()">
         <ion-item class="itemsInputs" lines="none">
           <ion-item lines="none" class="ion-no-padding">
             <ion-icon name="pricetags"></ion-icon>
@@ -106,7 +106,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.name">
             <div class="error-message"
-              *ngIf="loginForm.get('name').hasError(validation.type) && (loginForm.get('name').dirty || loginForm.get('name').touched)">
+              *ngIf="registerAdminForm.get('name').hasError(validation.type) && (registerAdminForm.get('name').dirty || registerAdminForm.get('name').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
@@ -122,7 +122,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.email">
             <div class="error-message"
-              *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+              *ngIf="registerAdminForm.get('email').hasError(validation.type) && (registerAdminForm.get('email').dirty || registerAdminForm.get('email').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
@@ -142,12 +142,45 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.password">
             <div class="error-message"
-              *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+              *ngIf="registerAdminForm.get('password').hasError(validation.type) && (registerAdminForm.get('password').dirty || registerAdminForm.get('password').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
         </div>
-        <ion-button class="register" expand="block" type="submit" [disabled]="!loginForm.valid">Registrar</ion-button>
+
+        <ion-item class="itemsInputs" lines="none">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-icon name="call"></ion-icon>
+            <ion-input formControlName="phone" placeholder="Celular" type="text">
+            </ion-input>
+          </ion-item>
+        </ion-item>
+
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.phone">
+            <div class="error-message"
+              *ngIf="registerAdminForm.get('phone').hasError(validation.type) && (registerAdminForm.get('phone').dirty || registerAdminForm.get('phone').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
+        <ion-item class="itemsInputs" lines="none">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-icon name="bus"></ion-icon>
+            <ion-input type="text" formControlName="company" placeholder="Empresa"></ion-input>
+          </ion-item>
+        </ion-item>
+
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.company">
+            <div class="error-message"
+              *ngIf="registerAdminForm.get('company').hasError(validation.type) && (registerAdminForm.get('company').dirty || registerAdminForm.get('company').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+        <ion-button class="register" expand="block" type="submit" [disabled]="!registerAdminForm.valid">Registrar</ion-button>
       </form>
     </div>
   </div>
