@@ -17,40 +17,8 @@ import { Storage } from '@ionic/storage';
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
   userInfo: any = [];
-  public appPages = [
-    {
-      title: 'Conducir',
-      url: 'drive',
-      icon: 'navigate'
-    },
-    {
-      title: 'Inicio',
-      url: 'home',
-      icon: 'home'
-    },
-    {
-      title: 'Operaciones',
-      url: 'operations',
-      icon: 'car'
-    },
-    {
-      title: 'Finanzas',
-      url: 'finance',
-      icon: 'wallet'
-    },
-    {
-      title: 'Configuración',
-      url: 'configuration',
-      icon: 'settings'
-    },
-    {
-      title: 'Ayuda',
-      url: 'help',
-      icon: 'help'
-    }
-  ];
+  public isAdmin: boolean = false;
  
-
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -65,6 +33,7 @@ export class AppComponent implements OnInit {
 
   onLogOut(){
    this.authService.onLogOut();
+   this.storage.remove('userAuth');
   }
 
   initializeApp() {
@@ -76,7 +45,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // this.authService.isLogged();
-    // this.authService.isAdmin();
+    //this.authService.isAdmin();
     this.getUser();
   }
   
@@ -89,6 +58,9 @@ export class AppComponent implements OnInit {
       console.log(data);
       if (data) {
         this.userInfo = data;
+        if(data.role=="admin"){
+          this.isAdmin= true;
+        }
       } else {
         this.userInfo = null;
       }

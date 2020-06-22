@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'operations',
     loadChildren: () => import('./components/operations/operationsHome/operations.module').then( m => m.OperationsPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, AdminGuard]
   },
   {
     path: 'help',

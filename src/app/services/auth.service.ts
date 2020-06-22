@@ -86,34 +86,22 @@ async onLogOut(){
 //   return this.isLog;
 // }
 
-// async isAdmin(): Promise<boolean> {
-//   await this.afAuth.authState.subscribe((user) => {
-//     this.getUser(user.uid).subscribe((user)=>{
-//       if (user.role == 'admin') {
-//         console.log('admin servicio si');
-//         return this.isAdmininistrator = true;
-//       } else {
-//         console.log('admin servicio no');
-//         return this.isAdmininistrator = false;
-//       }
-//     })
-//   });
-// return this.isAdmininistrator;
-// }
 
-
-// getUser(userId: string){
-//   this.userDoc = this.afs.doc<User>(`users/${userId}`);
-//   return this.user = this.userDoc.snapshotChanges().pipe(map(action=>{
-//     if (action.payload.exists == false){
-//       return null;
-//     } else{
-//       const data = action.payload.data() as User;
-//       data.id = action.payload.id;
-//       return data;
-//     }
-//   }));
-// }
+ async isAdmin() {
+   //await this.afAuth.authState.subscribe((user) => {
+     //this.getCurrentUser(user.uid).subscribe((user)=>{
+  this.storage.get('userAuth').then((user)=>{  
+       if (user.role == 'admin') {
+         console.log('admin servicio si');
+         return this.isAdmininistrator = true;
+       } else {
+         console.log('admin servicio no');
+         return this.isAdmininistrator = false;
+       }
+     })
+     return this.isAdmininistrator;
+   };
+     
 
 // async onRegister (user: User){
 //   try{
