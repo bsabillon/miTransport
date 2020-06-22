@@ -1,12 +1,64 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-back-button slot="start"></ion-back-button>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-title>Agregar Vehiculo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form #formVehicle="ngForm" (ngSubmit)="addVehicle(formVehicle)"> 
+  <form [formGroup]="addForm" (ngSubmit)="onRegister()">
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="alias" placeholder="Alias *"></ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.alias">
+        <div class="error-message"
+          *ngIf="addForm.get('alias').hasError(validation.type) && (addForm.get('alias').dirty || addForm.get('alias').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="barbell"></ion-icon>
+        <ion-input formControlName="capacity" placeholder="Capacidad *" type="number">
+        </ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.capacity">
+        <div class="error-message"
+          *ngIf="addForm.get('capacity').hasError(validation.type) && (addForm.get('capacity').dirty || addForm.get('capacity').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="code-working"></ion-icon>
+        <ion-input formControlName="licensePlate" placeholder="Matrícula(Placa) *" type="text">
+        </ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.licensePlate">
+        <div class="error-message"
+          *ngIf="addForm.get('licensePlate').hasError(validation.type) && (addForm.get('licensePlate').dirty || addForm.get('licensePlate').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
+  </form>
+  <!-- <form #formVehicle="ngForm" (ngSubmit)="addVehicle(formVehicle)"> 
     <input type="hidden" name="id" [(ngModel)]="this.vehiclesService.selectedVehicle.id"  >
     <ion-item>
       <br>
@@ -22,7 +74,7 @@
     
     <ion-button  type="submit" expand="block" routerLink="/vehicles-home" > Agregar</ion-button>
 
-  </form>
+  </form> -->
 
 
 </ion-content>

@@ -1,19 +1,14 @@
 <ion-header>
-  <ion-toolbar color="primary">
-
-    <ion-back-button slot="start"></ion-back-button>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-buttons slot="end">
-      <ion-button  routerLink="/trips/add">
+      <ion-button routerLink="/trips/add">
         <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
       </ion-button>
     </ion-buttons>
-
-
     <ion-title>Viajes</ion-title>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar showCancelButton="always"></ion-searchbar>
-  </ion-toolbar>
+  <ion-searchbar color="primary" placeholder="Buscar" mode="ios"></ion-searchbar>
 </ion-header>
 
 <ion-content>
@@ -21,10 +16,6 @@
     <ion-icon name="car"></ion-icon>
     <ion-text><strong>{{trip.time}}</strong></ion-text>
     <ion-row> </ion-row>
-    
   </ion-item>
 
-
-  
 </ion-content>
-

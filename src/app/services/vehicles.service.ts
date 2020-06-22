@@ -52,10 +52,10 @@ public  selectedVehicle: Vehicle = {
     }));
   }
 
-  addVehicle(vehicle: Vehicle):void{
+  addVehicle(record) {
     const id = this.afStore.createId();
-    vehicle.id =id;
-    this.vehiclesCollection.doc(id).set(vehicle);
+    record['id'] =id;
+    return this.vehiclesCollection.doc(id).set(record);
   }
 
   updateVehicle(vehicle: Vehicle):void{
