@@ -25,7 +25,6 @@ export class TripsHomePage implements OnInit {
   getTrips(){
     this.tripsServices.getTrips().subscribe(trips => {
       this.trips = trips;
-     // console.log(vehicles);
     });
   }
 
