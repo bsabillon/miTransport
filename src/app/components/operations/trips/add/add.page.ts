@@ -7,11 +7,11 @@ import { TripsService } from '../../../../services/trips.service';
 import { VehiclesService } from '../../../../services/vehicles.service';
 import { DriversService } from '../../../../services/drivers.service';
 import { PassengersService } from '../../../../services/passengers.service';
-import { Vehicle } from 'src/app/models/vehicle.class';
 import { AuthService } from 'src/app/services/auth.service';
 
 import { Storage } from '@ionic/storage';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { StopsService } from 'src/app/services/stops.service';
 
 @Component({
   selector: 'app-add',
@@ -50,9 +50,12 @@ export class AddPage implements OnInit {
   };
 
   constructor(
-    public tripsServices: TripsService, public vehiclesServices: VehiclesService,
+    public stopsServices: StopsService,
+    public tripsServices: TripsService, 
+    public vehiclesServices: VehiclesService,
     public driversServices: DriversService,
-    public passengersServices: PassengersService,public authService: AuthService,
+    public passengersServices: PassengersService,
+    public authService: AuthService,
     private storage: Storage,
     public loadingController: LoadingController,
     public toastController: ToastController,
@@ -89,11 +92,13 @@ export class AddPage implements OnInit {
   public drivers: any[];
   public passengers: any[];
   public trips: any = [];
+  public stops: any = [];
 
   ngOnInit() {
     this.getVehicules();
     this.getDrivers();
     this.getPassengers();
+    this.getStops();
 
   }
 
@@ -150,6 +155,12 @@ export class AddPage implements OnInit {
   getPassengers() {
     this.passengersServices.getUsers().subscribe(passengers => {
       this.passengers = passengers;
+    });
+  }
+
+  getStops() {
+    this.stopsServices.getStops().subscribe(stops => {
+      this.stops = stops;
     });
   }
 

@@ -97,7 +97,13 @@ const routes: Routes = [
     path: 'stops/add',
     loadChildren: () => import('./components/operations/stops/add/add.module').then( m => m.AddPageModule),
     canActivate: [AuthGuard,AdminGuard]
+  },
+  {
+    path: 'home/trips',
+    loadChildren: () => import('./components/home/trips/trips.module').then( m => m.TripsPageModule),
+    canActivate: [AuthGuard]
   }
+
 ];
 
 @NgModule({

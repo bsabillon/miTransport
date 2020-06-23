@@ -1,15 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-back-button slot="start" defaultHref="#"></ion-back-button>
-    <ion-title>Agregar Parada</ion-title>
+    <ion-title>Agregar Viaje</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content
-  [scrollEvents]="true"
-  (ionScrollStart)="logScrollStart()"
-  (ionScroll)="logScrolling($event)"
-  (ionScrollEnd)="logScrollEnd()">
+  [scrollEvents]="true">
 
   <form [formGroup]="addForm" (ngSubmit)="addTrip()">
 
@@ -79,15 +76,17 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="stops" placeholder="Paradas *"></ion-input>
+        <ion-icon class="firstIcon" name="bus"></ion-icon>
+          <ion-select placeholder="Vehiculo *" formControlName="vehicle">
+            <ion-select-option *ngFor="let vehicle of vehicles">{{vehicle.alias}}</ion-select-option>
+          </ion-select>
       </ion-item>
     </ion-item>
 
     <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.stops">
+      <ng-container *ngFor="let validation of validation_messages.vehicle">
         <div class="error-message"
-          *ngIf="addForm.get('stops').hasError(validation.type) && (addForm.get('stops').dirty || addForm.get('stops').touched)">
+          *ngIf="addForm.get('vehicle').hasError(validation.type) && (addForm.get('vehicle').dirty || addForm.get('vehicle').touched)">
           {{ validation.message }}
         </div>
       </ng-container>
@@ -95,12 +94,10 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="driver">
-          <ion-select>
+        <ion-icon class="firstIcon" name="people"></ion-icon>
+          <ion-select formControlName="driver" placeholder="Conductor *">
             <ion-select-option *ngFor="let driver of drivers">{{driver.name}}</ion-select-option>
           </ion-select>
-        </ion-input>
       </ion-item>
     </ion-item>
 
@@ -115,12 +112,30 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="passengers">
-          <ion-select multiple="true "> 
+        <ion-icon class="firstIcon" name="trail-sign"></ion-icon>
+        <ion-select formControlName="stops" placeholder="Paradas *" multiple="true ">
+          <ion-select-option *ngFor="let stop of stops">{{stop.alias}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.stops">
+        <div class="error-message"
+          *ngIf="addForm.get('stops').hasError(validation.type) && (addForm.get('stops').dirty || addForm.get('stops').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon class="firstIcon" name="walk-outline"></ion-icon>
+          <ion-select formControlName="passengers" placeholder="Pasajeros *"  multiple="true "> 
             <ion-select-option *ngFor="let passenger of passengers">{{passenger.name}}</ion-select-option>
           </ion-select>
-        </ion-input>
       </ion-item>
     </ion-item>
 
@@ -133,25 +148,7 @@
       </ng-container>
     </div>
 
-    <ion-item class="itemsInputs" lines="none">
-      <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="vehicle">
-          <ion-select>
-            <ion-select-option *ngFor="let vehicle of vehicles">{{vehicle.alias}}</ion-select-option>
-          </ion-select>
-        </ion-input>
-      </ion-item>
-    </ion-item>
 
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.vehicle">
-        <div class="error-message"
-          *ngIf="addForm.get('vehicle').hasError(validation.type) && (addForm.get('vehicle').dirty || addForm.get('vehicle').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
 
     <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
 
