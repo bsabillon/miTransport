@@ -4,6 +4,7 @@ import {Driver} from '../models/driver.class'
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -11,8 +12,9 @@ import { asLiteral } from '@angular/compiler/src/render3/view/util';
 })
 export class DriversService {
 
-  constructor(public afStore: AngularFirestore) { 
-    this.driversCollection = afStore.collection<Driver>('drivers');
+  constructor(public afStore: AngularFirestore,public authService: AuthService) { 
+    const idCurrentUser = this.authService.currentUser.uid;
+    this.driversCollection = this.afStore.collection<Driver>('drivers', ref => ref.where('userUid','==',idCurrentUser ));
     this.drivers = this.driversCollection.valueChanges();
   }
 
@@ -29,9 +31,7 @@ export class DriversService {
     return this.drivers = this.driversCollection.snapshotChanges()
     .pipe(map(changes =>{
       return changes.map( action => {
-        const data = action.payload.doc.data() as 
-        Driver;
-       // data.uid = action.payload.doc.id;
+        const data = action.payload.doc.data() as Driver;
         return data;
       })
     }));
@@ -50,10 +50,10 @@ export class DriversService {
     }));
   }
 
-  addVehicle(driver: Driver):void{
+  addDriver(record) {
     const id = this.afStore.createId();
-    driver.id =id;
-    this.driversCollection.doc(id).set(driver);
+    record['id'] =id;
+    return this.driversCollection.doc(id).set(record);
   }
 
   updateVehicle(driver: Driver):void{

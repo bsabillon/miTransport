@@ -23,7 +23,7 @@ export class RegisterPage implements OnInit {
       { type: 'required', message: 'El nombre es requerido.' },
     ],
     company: [
-      { type: 'required', message: 'El nombre es requerido.' },
+      { type: 'required', message: 'La empresa es requerida.' },
     ],
     email: [
       { type: 'required', message: 'El correo es requerido.' },
@@ -71,6 +71,10 @@ export class RegisterPage implements OnInit {
         Validators.minLength(8),
         // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
       ])),
+      company: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      
     });
     this.registerAdminForm = this.formBuilder.group({
       name: new FormControl('', Validators.compose([
@@ -107,11 +111,11 @@ export class RegisterPage implements OnInit {
   async onRegister() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Porfavor espere...',
+      message: 'Por favor espere...',
       // duration: 2000
     });
     loading.present();
-    (this.personType == 'passenger') ? console.log(this.registerClientForm.value) : console.log(this.registerAdminForm.value);
+    (this.personType == 'passenger') ? console.log(this.registerClientForm.value) : console.log(this.registerAdminForm.value); //to print test
     const value = {};
     (this.personType == 'passenger') ? value['email'] = this.registerClientForm.get('email').value 
     : value['email'] = this.registerAdminForm.get('email').value;
@@ -125,15 +129,15 @@ export class RegisterPage implements OnInit {
       : this.user.name = this.registerAdminForm.get('name').value;
       (this.personType == 'passenger') ? this.user.phone = this.registerClientForm.get('phone').value
       : this.user.phone = this.registerAdminForm.get('phone').value;
-      if (this.personType != 'passenger') {
-        this.user.company = this.registerAdminForm.get('company').value;
-      } 
+      (this.personType == 'passenger') ? this.user.company = this.registerClientForm.get('company').value
+      //if (this.personType != 'passenger') {
+      :this.user.company = this.registerAdminForm.get('company').value;
+     // } 
       this.storage.set('userAuth', this.user);
       this.createUser(this.user);
       loading.dismiss();
     }, (error) => {
       loading.dismiss();
-      // this.errorMessage = error.message;
       console.log(error);
       this.presentAlert();
     });
@@ -146,9 +150,9 @@ export class RegisterPage implements OnInit {
     record['name'] = user.name;
     record['role'] = user.role;
     record['phone'] = user.phone;
-    if (this.personType != 'passenger') {
-      record['company'] = this.registerAdminForm.get('company').value;
-    } 
+    //if (this.personType != 'passenger') {
+    record['company'] = user.company;
+   // } 
     this.authService.createUser(record).then(resp => {
       this.navCtrl.navigateForward('/home');
     }).catch(error => {

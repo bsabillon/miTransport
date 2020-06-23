@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 
@@ -8,7 +8,10 @@ import { VehiclesService } from '../../../../services/vehicles.service';
 import { DriversService } from '../../../../services/drivers.service';
 import { PassengersService } from '../../../../services/passengers.service';
 import { Vehicle } from 'src/app/models/vehicle.class';
+import { AuthService } from 'src/app/services/auth.service';
 
+import { Storage } from '@ionic/storage';
+import { ToastController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add',
@@ -17,11 +20,71 @@ import { Vehicle } from 'src/app/models/vehicle.class';
   providers: [VehiclesService]
 })
 export class AddPage implements OnInit {
+  addForm: FormGroup;
 
-  constructor(public tripsServices: TripsService, public vehiclesServices: VehiclesService,
+  validation_messages = {
+    recurrency: [
+      { type: 'required', message: 'La recurrencia del viaje es requerida.' },
+    ],
+    time: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    origin: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    destination: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    stops: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    driver: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    passengers: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+    vehicle: [
+      { type: 'required', message: 'Las coordenadas son requeridas.' },
+    ],
+  };
+
+  constructor(
+    public tripsServices: TripsService, public vehiclesServices: VehiclesService,
     public driversServices: DriversService,
-    public passengersServices: PassengersService,
-  ) { }
+    public passengersServices: PassengersService,public authService: AuthService,
+    private storage: Storage,
+    public loadingController: LoadingController,
+    public toastController: ToastController,
+    public formBuilder: FormBuilder
+  ) { 
+    this.addForm = this.formBuilder.group({
+      recurrency: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      time: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      origin: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      destination: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      stops: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      driver: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      passengers: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+      vehicle: new FormControl('', Validators.compose([
+        Validators.required,
+      ])),
+    });
+  }
   public vehicles: any = [];
   public drivers: any[];
   public passengers: any[];
@@ -34,13 +97,42 @@ export class AddPage implements OnInit {
 
   }
 
-  addTrip(formTrip: NgForm): void {
-    if (formTrip.value.id == null) {
-      this.tripsServices.addTrip(formTrip.value);
-    } else {
-      this.tripsServices.updateTrip(formTrip.value);
-    }
-    formTrip.reset();
+  async addTrip() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Por favor espere...',
+    });
+    loading.present();
+    this.storage.get('userAuth').then((data) => {
+      const record = {};
+      record['recurrency'] = this.addForm.get('recurrency').value;
+      record['time'] = this.addForm.get('time').value;
+      record['origin'] = this.addForm.get('origin').value;
+      record['destination'] = this.addForm.get('destination').value;
+      record['stops'] = this.addForm.get('stops').value;
+      record['driver'] = this.addForm.get('driver').value;
+      record['passengers'] = this.addForm.get('passengers').value;
+      record['vehicle'] = this.addForm.get('vehicle').value;
+      record['userUid'] = data.uid;
+      this.tripsServices.addTrip(record).then((trip) => {
+        console.log(trip);
+        this.presentToast('¡El viaje se agregó correctamente!');
+        this.addForm.reset();
+        loading.dismiss();
+      }, (error) => {
+        console.log(error);
+        this.presentToast('¡El viaje no se pudo agregar!');
+        loading.dismiss();
+      });
+    });
+  }
+
+  async presentToast(msj) {
+    const toast = await this.toastController.create({
+      message: msj,
+      duration: 2100
+    });
+    toast.present();
   }
 
   getVehicules() {
@@ -56,7 +148,7 @@ export class AddPage implements OnInit {
   };
 
   getPassengers() {
-    this.passengersServices.getPassengers().subscribe(passengers => {
+    this.passengersServices.getUsers().subscribe(passengers => {
       this.passengers = passengers;
     });
   }

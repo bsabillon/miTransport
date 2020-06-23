@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 
 import {Passenger} from '../models/passenger.class';
+import {User} from '../models/user.class';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -11,60 +13,61 @@ import {Passenger} from '../models/passenger.class';
 })
 export class PassengersService {
 
-  constructor(public afStore: AngularFirestore) { 
-    this.passengersCollection =afStore.collection<Passenger>('passengers');
-    this.passengers = this.passengersCollection.valueChanges();
+  constructor(public afStore: AngularFirestore,public authService: AuthService) { 
+    const idCurrentUser = this.authService.currentUser.uid;  
+
+    this.usersCollection = this.afStore.collection<User>('users', ref => ref.where('company','==',idCurrentUser ))
+    this.users = this.usersCollection.valueChanges();
 
   }
 
-  private passengersCollection : AngularFirestoreCollection<Passenger>;
-  private passengers : Observable<Passenger[]>;
-  private passenger: Observable<Passenger>;
-  private passengerDoc: AngularFirestoreDocument<Passenger>;
-  public  selectedPassenger: Passenger = {
-    id: null
+  private usersCollection : AngularFirestoreCollection<User>;
+  private users : Observable<User[]>;
+  private user: Observable<User>;
+  private userDoc: AngularFirestoreDocument<User>;
+  public  selectedUser: User = {
+    uid: null
   };  
 
-  getPassengers(){
-    return this.passengers = this.passengersCollection.snapshotChanges()
+  getUsers(){
+    return this.users = this.usersCollection.snapshotChanges()
     .pipe(map(changes =>{
       return changes.map( action => {
-        const data = action.payload.doc.data() as Passenger;
-       // data.uid = action.payload.doc.id;
+        const data = action.payload.doc.data() as User;
         return data;
       })
     }));
   }
 
-  getPassenger(passengerId: string){
-    this.passengerDoc = this.afStore.doc<Passenger>(`passengers/${passengerId}`);
-    return this.passenger = this.passengerDoc.snapshotChanges().pipe(map(action=>{
+  getUser(userId: string){
+    this.userDoc = this.afStore.doc<User>(`users/${userId}`);
+    return this.user = this.userDoc.snapshotChanges().pipe(map(action=>{
       if (action.payload.exists == false){
         return null;
       } else{
-        const data = action.payload.data() as Passenger;
-        data.id = action.payload.id;
+        const data = action.payload.data() as User;
+        data.uid = action.payload.id;
         return data;
       }
     }));
   }
 
-  addPassenger(passenger: Passenger):void{
+  addUserr(user: User):void{
     const id = this.afStore.createId();
-    passenger.id =id;
-    this.passengersCollection.doc(id).set(passenger);
+    user.uid =id;
+    this.usersCollection.doc(id).set(user);
   }
 
-  updatePassenger(passenger: Passenger):void{
-    let passengerId = passenger.id;
-    this.passengerDoc = this.afStore.doc<Passenger>
+  updateUser(user: User):void{
+    let passengerId = user.uid;
+    this.userDoc = this.afStore.doc<User>
     (`passengers/${passengerId}`);
-    this.passengerDoc.update(passenger);
+    this.userDoc.update(user);
   }
 
-  deletePassenger(passengerId: string):void {
-    this.passengerDoc = this.afStore.doc<Passenger>(`passengers/${passengerId}`);
-    this.passengerDoc.delete(); 
+  deleteUser(userId: string):void {
+    this.userDoc = this.afStore.doc<User>(`users/${userId}`);
+    this.userDoc.delete(); 
   }
 
 

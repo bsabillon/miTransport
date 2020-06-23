@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
 import {Passenger} from '../../../../models/passenger.class';
 import {PassengersService} from '../../../../services/passengers.service';
+
 
 
 @Component({
@@ -14,16 +14,16 @@ import {PassengersService} from '../../../../services/passengers.service';
   styleUrls: ['./passengers-home.page.scss'],
 })
 export class PassengersHomePage implements OnInit {
-  public passengers: any = [];
-  constructor(public passengersServices: PassengersService, public router: Router) { }
+  public users: any = [];
+  constructor(public userServices: PassengersService, public router: Router) { }
 
   ngOnInit() {
-    this.getPassengers();
+    this.getUsers();
   }
 
-  getPassengers(){
-    this.passengersServices.getPassengers().subscribe(passengers => {
-      this.passengers = passengers;
+  getUsers(){
+    this.userServices.getUsers().subscribe(users => {
+      this.users = users;
     });
   }
 

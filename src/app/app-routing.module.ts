@@ -6,7 +6,7 @@ import { AdminGuard } from './guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   
@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'operations',
     loadChildren: () => import('./components/operations/operationsHome/operations.module').then( m => m.OperationsPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'help',
@@ -51,52 +51,52 @@ const routes: Routes = [
   {
     path: 'vehicles-home',
     loadChildren: () => import('./components/operations/vehicles/vehicles-home/vehicles-home.module').then( m => m.VehiclesHomePageModule),
-    // canActivate: [AuthGuard && AdminGuard ]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'vehicles/add',
     loadChildren: () => import('./components/operations/vehicles/add/add.module').then( m => m.AddPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'drivers-home',
     loadChildren: () => import('./components/operations/drivers/drivers-home/drivers-home.module').then( m => m.DriversHomePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'drivers/add',
     loadChildren: () => import('./components/operations/drivers/add/add.module').then( m => m.AddPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'trips-home',
     loadChildren: () => import('./components/operations/trips/trips-home/trips-home.module').then( m => m.TripsHomePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'trips/add',
     loadChildren: () => import('./components/operations/trips/add/add.module').then( m => m.AddPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'passengers-home',
     loadChildren: () => import('./components/operations/passengers/passengers-home/passengers-home.module').then( m => m.PassengersHomePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'passengers/add',
     loadChildren: () => import('./components/operations/passengers/add/add.module').then( m => m.AddPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'stops-home',
     loadChildren: () => import('./components/operations/stops/stops-home/stops-home.module').then( m => m.StopsHomePageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   },
   {
     path: 'stops/add',
     loadChildren: () => import('./components/operations/stops/add/add.module').then( m => m.AddPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard,AdminGuard]
   }
 ];
 

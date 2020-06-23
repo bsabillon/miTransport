@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {Vehicle} from '../../../../models/vehicle.class';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -15,7 +16,10 @@ import { map } from 'rxjs/operators';
 export class VehiclesHomePage implements OnInit {
 public vehicles: any = [];
 
-  constructor(public vehiclesServices: VehiclesService, public router: Router) { }
+  constructor(public vehiclesServices: VehiclesService, public router: Router, public authService: AuthService) { 
+   
+
+  }
 
   ngOnInit() {
     this.getVehicules();
@@ -24,7 +28,6 @@ public vehicles: any = [];
   getVehicules(){
     this.vehiclesServices.getVehicles().subscribe(vehicles => {
       this.vehicles = vehicles;
-     // console.log(vehicles);
     });
   }
 

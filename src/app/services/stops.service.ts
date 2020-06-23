@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
 import {Stop} from '../models/stop.class'
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -12,7 +13,10 @@ import {Stop} from '../models/stop.class'
 })
 export class StopsService {
 
-  constructor(public afStore: AngularFirestore) { this.stopsCollection = afStore.collection<Stop>('stops');
+  constructor(public afStore: AngularFirestore, public authService: AuthService) { 
+  const idCurrentUser = this.authService.currentUser.uid;  
+
+ this.stopsCollection = this.afStore.collection<Stop>('stops', ref => ref.where('userUid','==',idCurrentUser ))
   this.stops = this.stopsCollection.valueChanges();}
 
 
@@ -49,10 +53,10 @@ export class StopsService {
     }));
   }
 
-  addStop(stop: Stop):void{
+  addStop(record) {
     const id = this.afStore.createId();
-    stop.id =id;
-    this.stopsCollection.doc(id).set(stop);
+    record['id'] =id;
+    return this.stopsCollection.doc(id).set(record);
   }
 
   updateStop(stop: Stop):void{

@@ -3,7 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} 
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
-
+import { AuthService } from './auth.service';
 import {Trip} from '../models/trip.class'
 
 @Injectable({
@@ -11,8 +11,9 @@ import {Trip} from '../models/trip.class'
 })
 export class TripsService {
 
-  constructor(public afStore: AngularFirestore) {
-    this.tripsCollection = afStore.collection<Trip>('trips');
+  constructor(public afStore: AngularFirestore,public authService: AuthService) {
+    const idCurrentUser = this.authService.currentUser.uid;
+    this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('userUid','==',idCurrentUser ));
     this.trips = this.tripsCollection.valueChanges();
    }
 
@@ -29,9 +30,7 @@ export class TripsService {
     return this.trips = this.tripsCollection.snapshotChanges()
     .pipe(map(changes =>{
       return changes.map( action => {
-        const data = action.payload.doc.data() as 
-        Trip;
-       // data.uid = action.payload.doc.id;
+        const data = action.payload.doc.data() as Trip;
         return data;
       })
     }));
@@ -50,10 +49,10 @@ export class TripsService {
     }));
   }
 
-  addTrip(trip: Trip):void{
+  addTrip(record) {
     const id = this.afStore.createId();
-    trip.id =id;
-    this.tripsCollection.doc(id).set(trip);
+    record['id'] =id;
+    return this.tripsCollection.doc(id).set(record);
   }
 
   updateTrip(trip: Trip):void{

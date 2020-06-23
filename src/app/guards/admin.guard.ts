@@ -18,12 +18,12 @@ export class AdminGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    // if(await this.authService.isAdmin()==true){
+     if(await this.authService.isAdmin()==true){
       console.log('admin guardia si');
       return true;
-    // }
-    // console.log('admin guardia no');
-    // return false;
+     }
+     console.log('admin guardia no');
+     return false;
   }
 
   

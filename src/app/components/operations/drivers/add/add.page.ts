@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {DriversService} from '../../../../services/drivers.service';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-
+import { Storage } from '@ionic/storage';
+import { ToastController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add',
@@ -10,21 +11,64 @@ import { Observable } from 'rxjs';
   styleUrls: ['./add.page.scss'],
 })
 export class AddPage implements OnInit {
-
-  constructor(public driversService: DriversService) { }
+  addForm: FormGroup;
+  validation_messages = {
+    name: [
+      { type: 'required', message: 'El nombre es requerido.' },
+    ],
+    email: [
+      { type: 'required', message: 'El email es requerido.' },
+    ]
+  };
+  constructor(
+    public driversService: DriversService,
+    private storage: Storage,
+    public loadingController: LoadingController,
+    public toastController: ToastController,
+    public formBuilder: FormBuilder,
+    ) { 
+      this.addForm = this.formBuilder.group({
+        name: new FormControl('', Validators.compose([
+          Validators.required,
+        ])),
+        email: new FormControl('', Validators.compose([
+          Validators.required,
+        ]))
+      });
+    }
 
   ngOnInit() {
   }
 
-  addDriver(formDriver: NgForm):void{
-    if(formDriver.value.id == null){
-      this.driversService.addVehicle(formDriver.value);
-    }else{
-      this.driversService.updateVehicle(formDriver.value);
-    }
-    formDriver.reset();
+  async addDriver() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Por favor espere...',
+    });
+    loading.present();
+    this.storage.get('userAuth').then((data) => {
+      const record = {};
+      record['name'] = this.addForm.get('name').value;
+      record['email'] = this.addForm.get('email').value;
+      record['userUid'] = data.uid;
+      this.driversService.addDriver(record).then((driver) => {
+        console.log(driver);
+        this.presentToast('¡El conductor se agregó correctamente!');
+        this.addForm.reset();
+        loading.dismiss();
+      }, (error) => {
+        console.log(error);
+        this.presentToast('¡El conductor no se pudo agregar!');
+        loading.dismiss();
+      });
+    });
   }
 
-
-
+  async presentToast(msj) {
+    const toast = await this.toastController.create({
+      message: msj,
+      duration: 2100
+    });
+    toast.present();
+  }
 }

@@ -1,64 +1,159 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-back-button slot="start"></ion-back-button>
-    <ion-title>Agregar Viaje</ion-title>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
+    <ion-title>Agregar Parada</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form #formTrip="ngForm" (ngSubmit)="addTrip(formTrip)">
-    <input type="hidden" name="id" [(ngModel)]="this.tripsServices.selectedTrip.id">
-    <ion-item>
+<ion-content
+  [scrollEvents]="true"
+  (ionScrollStart)="logScrollStart()"
+  (ionScroll)="logScrolling($event)"
+  (ionScrollEnd)="logScrollEnd()">
 
-      <ion-label color="dark" position="floating"> Recurrencia </ion-label>
-      <ion-input name="recurrency" type="text" [(ngModel)]="this.tripsServices.selectedTrip.recurrency"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label color="dark" position="floating"> Hora </ion-label>
-      <ion-input name="time" type="text" [(ngModel)]="this.tripsServices.selectedTrip.time"></ion-input>
-    </ion-item>
+  <form [formGroup]="addForm" (ngSubmit)="addTrip()">
 
-    <ion-item>
-
-      <ion-label color="dark" position="floating"> Origen </ion-label>
-      <ion-input name="origin" type="text" [(ngModel)]="this.tripsServices.selectedTrip.origin"></ion-input>
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="recurrency" placeholder="Recurrencia *"></ion-input>
+      </ion-item>
     </ion-item>
 
-    <ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.recurrency">
+        <div class="error-message"
+          *ngIf="addForm.get('recurrency').hasError(validation.type) && (addForm.get('recurrency').dirty || addForm.get('recurrency').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
-      <ion-label color="dark" position="floating"> Destino </ion-label>
-      <ion-input name="destination" type="text" [(ngModel)]="this.tripsServices.selectedTrip.destination"></ion-input>
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="time" placeholder="Hora *"></ion-input>
+      </ion-item>
     </ion-item>
 
-    <ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.time">
+        <div class="error-message"
+          *ngIf="addForm.get('time').hasError(validation.type) && (addForm.get('time').dirty || addForm.get('time').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
-      <ion-label color="dark" position="floating"> Paradas </ion-label>
-      <ion-input name="stops" type="text" [(ngModel)]="this.tripsServices.selectedTrip.stops"></ion-input>
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="origin" placeholder="Origen *"></ion-input>
+      </ion-item>
     </ion-item>
 
-    <ion-item>
-      <ion-label color="dark" position="floating"> Conductor </ion-label>
-      <ion-select>
-        <ion-select-option *ngFor="let driver of drivers">{{driver.name}}</ion-select-option>
-      </ion-select>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.origin">
+        <div class="error-message"
+          *ngIf="addForm.get('origin').hasError(validation.type) && (addForm.get('origin').dirty || addForm.get('origin').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="destination" placeholder="Destino *"></ion-input>
+      </ion-item>
     </ion-item>
 
-    <ion-item>
-      <ion-label color="dark" position="floating"> Pasajeros </ion-label>
-      <ion-select multiple="true ">
-        <ion-select-option *ngFor="let passenger of passengers">{{passenger.name}}</ion-select-option>
-      </ion-select>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.destination">
+        <div class="error-message"
+          *ngIf="addForm.get('destination').hasError(validation.type) && (addForm.get('destination').dirty || addForm.get('destination').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="stops" placeholder="Paradas *"></ion-input>
+      </ion-item>
     </ion-item>
-    <ion-item>
-      <ion-label color="dark" position="floating"> Vehiculo </ion-label>
-      <ion-select>
-        <ion-select-option *ngFor="let vehicle of vehicles">{{vehicle.alias}}</ion-select-option>
-      </ion-select>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.stops">
+        <div class="error-message"
+          *ngIf="addForm.get('stops').hasError(validation.type) && (addForm.get('stops').dirty || addForm.get('stops').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="driver">
+          <ion-select>
+            <ion-select-option *ngFor="let driver of drivers">{{driver.name}}</ion-select-option>
+          </ion-select>
+        </ion-input>
+      </ion-item>
     </ion-item>
 
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.driver">
+        <div class="error-message"
+          *ngIf="addForm.get('driver').hasError(validation.type) && (addForm.get('driver').dirty || addForm.get('driver').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="passengers">
+          <ion-select multiple="true "> 
+            <ion-select-option *ngFor="let passenger of passengers">{{passenger.name}}</ion-select-option>
+          </ion-select>
+        </ion-input>
+      </ion-item>
+    </ion-item>
 
-    <ion-button type="submit" expand="block" routerLink="/trips-home">Enviar</ion-button>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.passengers">
+        <div class="error-message"
+          *ngIf="addForm.get('passengers').hasError(validation.type) && (addForm.get('passengers').dirty || addForm.get('passengers').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="vehicle">
+          <ion-select>
+            <ion-select-option *ngFor="let vehicle of vehicles">{{vehicle.alias}}</ion-select-option>
+          </ion-select>
+        </ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.vehicle">
+        <div class="error-message"
+          *ngIf="addForm.get('vehicle').hasError(validation.type) && (addForm.get('vehicle').dirty || addForm.get('vehicle').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
 
   </form>
 

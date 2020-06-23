@@ -49,20 +49,12 @@ export class AddPage implements OnInit {
   ngOnInit() {
   }
 
-  addVehicle(formVehicle: NgForm):void{
-    if(formVehicle.value.id == null){
-      this.vehiclesService.addVehicle(formVehicle.value);
-    }else{
-      this.vehiclesService.updateVehicle(formVehicle.value);
-    }
-    formVehicle.reset();
-  }
 
-  async onRegister() {
+
+  async addVehicle() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Porfavor espere...',
-      // duration: 2000
+      message: 'Por favor espere...',
     });
     loading.present();
     this.storage.get('userAuth').then((data) => {

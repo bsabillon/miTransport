@@ -91,6 +91,22 @@
             </div>
           </ng-container>
         </div>
+        <ion-item class="itemsInputs" lines="none">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-icon name="bus"></ion-icon>
+            <ion-input type="text" formControlName="company" placeholder="Empresa"></ion-input>
+          </ion-item>
+        </ion-item>
+
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.company">
+            <div class="error-message"
+              *ngIf="registerAdminForm.get('company').hasError(validation.type) && (registerAdminForm.get('company').dirty || registerAdminForm.get('company').touched)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
         <ion-button class="register" expand="block" type="submit" [disabled]="!registerClientForm.valid">Registrar</ion-button>
       </form>
     </div>

@@ -4,6 +4,7 @@ import {Vehicle} from '../models/vehicle.class'
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -11,10 +12,11 @@ import { asLiteral } from '@angular/compiler/src/render3/view/util';
 })
 export class VehiclesService {
 
-  constructor(public afStore: AngularFirestore) {
-    this.vehiclesCollection = afStore.collection<Vehicle>('vehicles');
-    this.vehicles = this.vehiclesCollection.valueChanges();
 
+  constructor(public afStore: AngularFirestore, public authService: AuthService) {
+    const idCurrentUser = this.authService.currentUser.uid;
+    this.vehiclesCollection = this.afStore.collection<Vehicle>('vehicles', ref => ref.where('userUid','==',idCurrentUser ));
+    this.vehicles = this.vehiclesCollection.valueChanges();
    }
 
 private vehiclesCollection : AngularFirestoreCollection<Vehicle>;
@@ -25,19 +27,16 @@ public  selectedVehicle: Vehicle = {
   id: null
 };  
 
+getVehicles(){
+  return this.vehicles = this.vehiclesCollection.snapshotChanges()
+  .pipe(map(changes =>{
+    return changes.map( action => {
+      const data = action.payload.doc.data() as Vehicle;
+      return data;
+    })
+  }));
+}
 
-
-  getVehicles(){
-    return this.vehicles = this.vehiclesCollection.snapshotChanges()
-    .pipe(map(changes =>{
-      return changes.map( action => {
-        const data = action.payload.doc.data() as 
-        Vehicle;
-       // data.uid = action.payload.doc.id;
-        return data;
-      })
-    }));
-  }
 
   getVehicle(vehicleId: string){
     this.vehicleDoc = this.afStore.doc<Vehicle>(`vehicles/${vehicleId}`);

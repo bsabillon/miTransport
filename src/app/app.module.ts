@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { environment } from './../environments/environment';
 import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
@@ -25,7 +25,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule,FormsModule,
     IonicStorageModule.forRoot({
       name: 'io.ionic.mitransporte',
       driverOrder: ['indexeddb', 'sqlite', 'websql',

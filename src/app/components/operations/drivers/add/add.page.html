@@ -1,28 +1,49 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-back-button slot="start"></ion-back-button>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-title>Agregar Conductor</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form #formDriver="ngForm" (ngSubmit)="addDriver(formDriver)"> 
-    <input type="hidden" name="id" [(ngModel)]="this.driversService.selectedDriver.uid"  >
-    <ion-item>
-      <br>
-        <ion-label color="dark"  position="floating" > Nombre </ion-label>
-        <ion-input name="name" type="text" [(ngModel)]="this.driversService.selectedDriver.name" ></ion-input>
+  <form [formGroup]="addForm" (ngSubmit)="addDriver()">
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="pricetags"></ion-icon>
+        <ion-input type="text" formControlName="name" placeholder="Nombre *"></ion-input>
+      </ion-item>
     </ion-item>
-    <ion-item>
-      <br>
-        <ion-label color="dark"  position="floating" > Correo Electronico </ion-label>
-        <ion-input name="email" type="email" [(ngModel)]="this.driversService.selectedDriver.email"></ion-input>
-    </ion-item>
-    <br>
-    
-    <ion-button  type="submit" expand="block" routerLink="/drivers-home" > Agregar</ion-button>
 
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div class="error-message"
+          *ngIf="addForm.get('name').hasError(validation.type) && (addForm.get('name').dirty || addForm.get('name').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item class="itemsInputs" lines="none">
+      <ion-item lines="none" class="ion-no-padding">
+        <ion-icon name="barbell"></ion-icon>
+        <ion-input formControlName="email" placeholder="Email *" type="text">
+        </ion-input>
+      </ion-item>
+    </ion-item>
+
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.email">
+        <div class="error-message"
+          *ngIf="addForm.get('email').hasError(validation.type) && (addForm.get('email').dirty || addForm.get('email').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+ 
+    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
   </form>
+
 
 
 </ion-content>

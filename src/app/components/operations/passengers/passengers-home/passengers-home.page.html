@@ -13,13 +13,13 @@
 </ion-header>
 
 <ion-content>
-  <div *ngFor="let passenger of passengers">
+  <div *ngFor="let user of users">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>{{passenger.name}}</ion-card-title>
+        <ion-card-title>{{user.name}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p> {{passenger.email}}</p>
+        <p> {{user.email}}</p>
       </ion-card-content>
     </ion-card>
   </div>
