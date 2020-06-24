@@ -78,7 +78,6 @@ export class AuthService {
   };
 
   async getCurrentUser() {
-
     this.afAuth.authState.subscribe((authUser)=>{
       this.getUserByUid(authUser.uid).subscribe((FSuser)=>{
          this.currentUser  = FSuser; 

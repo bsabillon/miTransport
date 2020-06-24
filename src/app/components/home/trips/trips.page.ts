@@ -20,8 +20,11 @@ export class TripsPage implements OnInit {
   getTrips(){
     this.tripsServices.getTrips().subscribe(trips => {
       this.trips = trips;
-     // console.log(vehicles);
+     // console.log(trips);
     });
   }
+
+  
+
 
 }

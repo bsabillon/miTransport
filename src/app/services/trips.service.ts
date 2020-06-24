@@ -36,6 +36,16 @@ export class TripsService {
     }));
   }
 
+  getTripsPassengers(){
+    return this.trips = this.tripsCollection.snapshotChanges()
+    .pipe(map(changes =>{
+      return changes.map( action => {
+        const data = action.payload.doc.data() as Trip;
+        return data;
+      })
+    }));
+  }
+
   getTrip(tripId: string){
     this.tripDoc = this.afStore.doc<Trip>(`trips/${tripId}`);
     return this.trip = this.tripDoc.snapshotChanges().pipe(map(action=>{
