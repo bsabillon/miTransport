@@ -11,7 +11,11 @@ import {Trip} from '../models/trip.class'
 })
 export class TripsService {
 
-  constructor(public afStore: AngularFirestore,public authService: AuthService) {
+  constructor(
+    public afStore: AngularFirestore,
+    public authService: AuthService
+    ) 
+    {
     const idCurrentUser = this.authService.currentUser.uid;
     this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('userUid','==',idCurrentUser ));
     this.trips = this.tripsCollection.valueChanges();
