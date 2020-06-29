@@ -38,6 +38,18 @@ export class PassengersTripsService {
     }));
   }
 
+  getTrip(tripId: string){
+    this.tripDoc = this.afStore.doc<Trip>(`trips/${tripId}`);
+    return this.trip = this.tripDoc.snapshotChanges().pipe(map(action=>{
+      if (action.payload.exists == false){
+        return null;
+      } else{
+        const data = action.payload.data() as Trip;
+        data.id = action.payload.id;
+        return data;
+      }
+    }));
+  }
 
 
 }
