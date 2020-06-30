@@ -2,14 +2,9 @@ ion-menu-button {
   color: var(--ion-color-primary);
 }
 
-// ion-content {
-//   text-align: center;
-//   justify-items: center;
-// }
-
 .validation-errors {
-  font-size: 0.7rem;
-  color: #fff;
+  font-size: 0.9rem;
+  color: #3880ff;
   margin-top: 1px;
   margin-bottom: 10px;
   text-align: center;
@@ -25,7 +20,7 @@ ion-menu-button {
 
 .btn_eye_icon > ion-icon {
   font-size: 22px;
-  color: #fff;
+  color: #3880ff;
 }
 
 .btn_eye_icon:focus {
@@ -70,7 +65,7 @@ ion-button {
 }
 
 ion-toolbar {
-  --background: rgb(30, 31, 30);
+  --background: #3880ff;
   color: white;
 }
 
@@ -138,7 +133,7 @@ ion-toolbar {
 }
 
 .itemsInputs > ion-item {
-  --background: rgba(255, 255, 255, 0.3);
+  --background: rgba(27, 103, 150, 0.126);
   width: 96%;
   margin-left: 2%;
   margin-bottom: 10px;
@@ -149,7 +144,7 @@ ion-toolbar {
 .itemsInputs > ion-item > ion-icon {
   margin-left: 4px;
   margin-right: 4px;
-  color: #fff;
+  color: #3880ff;
 }
 
 .NoCuenta > h6:focus {
