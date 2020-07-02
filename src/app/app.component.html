@@ -10,13 +10,13 @@
 
           <ion-menu-toggle auto-hide="false" >
           <ion-item routerDirection="root" *ngIf="isAdmin" routerLink="/drive" lines="none"
-          detail="false" [class.selected]="selectedIndex == i">
+          detail="false" >
           <ion-icon slot="start" name="navigate"></ion-icon>
           <ion-label>Conducir</ion-label>
           </ion-item>
 
           <ion-item routerDirection="root" routerLink="/home" lines="none"
-          detail="false" [class.selected]="selectedIndex == i">
+          detail="false" >
           <ion-icon slot="start" name="home"></ion-icon>
           <ion-label>Inicio</ion-label>
           </ion-item>
@@ -28,19 +28,19 @@
           </ion-item>
 
           <ion-item routerDirection="root" routerLink="/finance" lines="none"
-          detail="false" [class.selected]="selectedIndex == i">
+          detail="false" >
           <ion-icon slot="start" name="wallet"></ion-icon>
           <ion-label>Finanzas</ion-label>
           </ion-item>
 
           <ion-item routerDirection="root" routerLink="/configuration" lines="none"
-          detail="false" [class.selected]="selectedIndex == i">
+          detail="false" >
           <ion-icon slot="start" name="settings"></ion-icon>
           <ion-label>Configuración</ion-label>
           </ion-item>
 
           <ion-item routerDirection="root" routerLink="/help" lines="none"
-          detail="false" [class.selected]="selectedIndex == i">
+          detail="false" >
           <ion-icon slot="start" name="help"></ion-icon>
           <ion-label>Ayuda</ion-label>
           </ion-item>

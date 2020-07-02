@@ -57,7 +57,7 @@ export class LoginPage implements OnInit {
   async onLogin(){
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Porfavor espere...',
+      message: 'Por favor espere...',
       // duration: 2000
     });
     loading.present();
