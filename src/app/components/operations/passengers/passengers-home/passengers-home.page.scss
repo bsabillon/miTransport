@@ -3,6 +3,7 @@
     ion-card {
       position: relative;
       text-align: center;
+      margin-top: auto;
     }
   
     .card-title {
@@ -23,3 +24,17 @@
     }
   
   }
+
+
+.searchBar {
+  --background: #fff;
+   border-radius: 20px;
+}
+
+.searchBarContent {
+   position: sticky;
+   background: #dddada;
+   z-index: 1;
+   width: 100%;
+}
+

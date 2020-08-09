@@ -6,13 +6,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-fab id="myLocationButton" (click)="myPosition()" #buttonLocation>
-    <ion-fab-button>
-      <ion-icon name="locate"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 
-  <div id="map" [innerHtml]="safeHtml" #map>
+  <div id="map" #map>
+   
+    <ion-fab id="myLocationButton" (click)="myPosition()">
+      <ion-fab-button>
+        <ion-icon name="locate"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>s
   </div>
 </ion-content>
 

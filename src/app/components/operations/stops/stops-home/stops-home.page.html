@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-buttons slot="end">
       <ion-button routerLink="/stops/add">
@@ -8,14 +8,17 @@
     </ion-buttons>
     <ion-title>Paradas</ion-title>
   </ion-toolbar>
-  <ion-searchbar placeholder="Buscar" mode="ios"></ion-searchbar>
+  <div class="searchBarContent"> 
+    <ion-searchbar class="searchBar" placeholder="Buscar" mode="ios"></ion-searchbar>
+  </div>
+  
 </ion-header>
 
 <ion-content>
   <div *ngFor="let stop of stops">
 
     <ion-item-sliding>
-      <ion-item>
+      <ion-item> 
         <ion-card-header>
           <ion-card-title>{{stop.alias}}</ion-card-title>
         </ion-card-header>

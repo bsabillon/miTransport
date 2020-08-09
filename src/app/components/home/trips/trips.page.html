@@ -1,28 +1,36 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-back-button slot="start" defaultHref="#"></ion-back-button>
-    <ion-title>Viajes Disponibles </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/trips/add">
+        <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Viajes</ion-title>
   </ion-toolbar>
-  <ion-searchbar placeholder="Buscar" mode="ios"></ion-searchbar>
+  <div class="searchBarContent"> 
+    <ion-searchbar class="searchBar" placeholder="Buscar" mode="ios"></ion-searchbar>
+  </div>
 </ion-header>
 
 <ion-content>
 
-  <ion-card *ngFor="let trip of trips">
+  <ion-card class="tripCards" *ngFor="let trip of trips">
     <ion-card-title>
      
-    {{trip.origin}} -> {{trip.destination}}
+    {{trip.origin}} - {{trip.destination}}
     </ion-card-title>
     <ion-card-subtitle>
       {{trip.time}}
     </ion-card-subtitle>
     <ion-card-content>
-
+      <ion-icon name="walk-outline" slot="start"></ion-icon>
+      {{trip.passengers}}
     </ion-card-content>
-    <ion-item>
+    <ion-item lines="none">
       <ion-icon name="people" slot="start"></ion-icon>
       <ion-label>{{trip.driver}}</ion-label>
-      <ion-button  fill="outline" slot="end">Inscribirse</ion-button>
+      <ion-button fill="outline" slot="end">Inscribirse</ion-button>
     </ion-item>
 
   </ion-card>

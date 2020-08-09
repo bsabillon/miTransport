@@ -35,23 +35,38 @@
     color: #000;
 }
 
-#myLocationButton {
-    position: absolute;
-    right: 40px;
-    bottom: 70px;
-    width: 30px;
-    height: 30px;
-    z-index: 1;
-}
-
 #map {
     width: 100%;
-    height: 95%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+ion-toolbar>ion-button {
+    --border-radius: 30px;
+}
+
 #map {
     position: relative;
+}
+
+#centerMarkerImage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 34px; // image width
+    height: 34px; // image height
+    z-index: 1;
+}
+
+#myLocationButton{
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    width: 30px;
+    height: 30px;
 }

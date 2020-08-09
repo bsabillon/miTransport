@@ -50,23 +50,17 @@ export class AddPage implements OnInit {
     ]
   };
 
-  @ViewChild('map', { static: true }) MapElement: ElementRef;
-  @ViewChild('buttonLocation', { static: true }) buttonLocation: ElementRef;
-  @ViewChild('pinLocation', { static: true }) pinLocation: ElementRef;
+  @ViewChild('map', { static: true}) MapElement: ElementRef;
   public map: GoogleMap;
   public coords: any = {};
   public marker: Marker;
   // myPosition: any;
   public deliveryPosition: ILatLng = {
-    lat: 1,
-    lng: 1
+    lat: 0,
+    lng: 0
   };
-  public suggestions: any = [];
-  public markers: any = [];
   public setPositionAddressLat: number;
   public setPositionAddressLng: number;
-  safeHtml: SafeHtml;
-
 
   constructor(
     public stopsService: StopsService,
@@ -100,9 +94,6 @@ export class AddPage implements OnInit {
         ])),
       });
   
-    }
-  
-    ngOnInit() {
     }
   
     ngOnDestroy() {
@@ -173,113 +164,67 @@ export class AddPage implements OnInit {
     });
   }
 
-  onClick(){
-    this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src="https://static.wixstatic.com/media/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png/v1/fill/w_320,h_320,fp_0.50_0.50/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png" id="centerMarkerImg" #pinLocation>`);
-    const text = this.renderer.createText("my button");
-    this.renderer.appendChild(this.MapElement.nativeElement, text);
-  }
-
-  createPin(){
-    this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(`<img src="https://static.wixstatic.com/media/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png/v1/fill/w_320,h_320,fp_0.50_0.50/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png" id="centerMarkerImg" #pinLocation>`);
+  ngOnInit() {
+    this.loadMap();
   }
 
   async loadMap() {
-    console.log(`1`);
-    const loading = await this.loadingCtrl.create({
-      message: 'Por favor espere...',
-      cssClass:'Hidden'
-    });
-    loading.present();
-    LocationService.getMyLocation({ enableHighAccuracy: true }).then(position => {
-      loading.dismiss();
-      this.deliveryPosition = position.latLng;
-      this.addForm.patchValue({
-        coordinates: this.deliveryPosition,
-      });
-      // console.log(position);
-      const mapOptions: GoogleMapOptions = {
-        camera: {
-          target: this.deliveryPosition,
-          zoom: 17,
-        },
-        controls: {
-          zoom: false,
-        },
-        draggable: true,
-      };
-      this.map = GoogleMaps.create(this.MapElement.nativeElement, mapOptions);
-
-      this.youAreHere();
-      // this.placesService = new google.maps.places.PlacesService(this.MapElement.nativeElement);
-      this.createPin();
-      this.getPosition();
-    }, (error) => {
-      loading.dismiss();
-      this.router.navigate(['/']);
-      // this.router.navigate(['/tabs/home']);
-      console.log(`No tienes permisos!`);
-      console.log(error);
-    });
-  }
-
-  async youAreHere(){
-    // try{this.marker.remove()}catch(error){}
-    this.marker = this.map.addMarkerSync({
-      title: '¡Tu estas aqui!',
-      icon: {
-        url: 'https://static.wixstatic.com/media/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png/v1/fill/w_320,h_320,fp_0.50_0.50/2cd43b_73cacdc0c2434cfe8a83b5bca295e440~mv2.png',
-        size: {
-          width: 36,
-          height: 36
-        }
-      },
-      position: this.deliveryPosition
-    });
-  }
-
-  getPosition() {
-    console.log('Map is ready!');
-
-    // this.map.on(GoogleMapsEvent.CAMERA_MOVE).subscribe((result) => {
-    //   console.log('clicked');
+    const loading = await this.loadingCtrl.create();
+     loading.present();
+    //  Environment.setEnv({
+    //   'API_KEY_FOR_BROWSER_RELEASE': 'AIzaSyDWQpOjFLG5q1LIfqAdWpEVCnjQXkdR1ro',
+    //   'API_KEY_FOR_BROWSER_DEBUG': 'AIzaSyDWQpOjFLG5q1LIfqAdWpEVCnjQXkdR1ro'
     // });
-
-    this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(value => {
-      // console.log('object :', value);
-      const position = value[0].target;
-
-      this.deliveryPosition.lat = position.lat;
-      this.deliveryPosition.lng = position.lng;
-      this.setPositionAddressLat = this.deliveryPosition.lat;
-      this.setPositionAddressLng = this.deliveryPosition.lng;
-      this.addForm.patchValue({
-        coordinates: this.deliveryPosition,
-      });
-      console.log(this.marker);
-      // try{this.marker.remove()}catch(error){}
-      // this.youAreHere();
-      console.log("target", value[0].target);
-      console.log("deliveryPosition", this.deliveryPosition);
-      console.log("setPositionAddressLat", this.setPositionAddressLat);
-      console.log("setPositionAddressLng", this.setPositionAddressLng);
-
+    const myLatLng = await this.googlemapsService.getLocation();
+    this.deliveryPosition = myLatLng;
+  //  const mapEle: HTMLElement = document.getElementById('map');
+    this.map = GoogleMaps.create('map', {
+      camera: {
+        target: {
+          lat: myLatLng.lat,
+          lng: myLatLng.lng
+        },
+      zoom: 17,
+      },
+      controls: {
+        zoom: false,
+      },
+    });
+    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      loading.dismiss();
+      this.map.on(GoogleMapsEvent.CAMERA_MOVE).subscribe(res => {
+        // console.log(this.map.getCameraTarget());
+        const position = this.map.getCameraTarget();
+        this.deliveryPosition.lat = position.lat;
+        this.deliveryPosition.lng = position.lng;
+        this.setPositionAddressLat = this.deliveryPosition.lat;
+        this.setPositionAddressLng = this.deliveryPosition.lng;
+        });
     });
 
+    this.marker = this.map.addMarkerSync({
+      title: 'Ubication',
+      icon: {
+          url : 'http://www.myiconfinder.com/uploads/iconsets/e0100e513d89eb57b88291e0f088aac9.png',
+          size: {
+            width: 24,
+            height: 24
+          }
+      },
+      position: {
+        lat: myLatLng.lat,
+        lng: myLatLng.lng
+      }
+    });
   }
 
   public async myPosition() {
-    const loading = await this.loadingCtrl.create({
-      message: 'Por favor espere...',
-      cssClass:'Hidden'
-    });
-    loading.present();
+    const loading = await this.loadingCtrl.create();
+     loading.present();
     const myLatLng = await this.googlemapsService.getLocation();
     this.map.setCameraTarget(myLatLng);
     this.marker.setPosition(myLatLng);
     this.deliveryPosition = myLatLng;
-    this.addForm.patchValue({
-      coordinates: this.deliveryPosition,
-    });
     this.map.setCameraZoom(17);
     loading.dismiss();
   }
@@ -289,17 +234,6 @@ export class AddPage implements OnInit {
     const position = `Lat: ${marker.getPosition().lat}, Lng: ${marker.getPosition().lng}`;
     marker.setTitle(position);
     marker.showInfoWindow();
-  }
-
-  moveToLocation(position:ILatLng) {
-    this.deliveryPosition = position;
-    const moveTo: ILatLng = position;
-    this.map.setOptions({
-      camera: {
-        target: moveTo,
-        zoom: 16,
-      },
-    });
   }
 
 }

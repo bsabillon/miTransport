@@ -32,3 +32,15 @@
   .tripCards > ion-item > ion-button {
     --border-radius: 15px;
   }
+
+  .searchBar {
+    --background: #fff;
+     border-radius: 20px;
+  }
+  
+  .searchBarContent {
+     position: sticky;
+     background: #dddada;
+     z-index: 1;
+     width: 100%;
+  }
