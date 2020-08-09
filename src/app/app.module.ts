@@ -17,6 +17,11 @@ import { AngularFirestoreModule, AngularFirestore } from '@angular/fire/firestor
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { GoogleMaps, Geocoder } from '@ionic-native/google-maps';
+import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { GooglemapsServiceService } from './services/googlemapsService/googlemaps-service.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +40,12 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
   ],
   providers: [AngularFirestore,AngularFireAuth,
     StatusBar,
+    GoogleMaps,
+    Diagnostic,
+    Geolocation,
+    LocationAccuracy,
+    GooglemapsServiceService,
+    Geocoder,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

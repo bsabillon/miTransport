@@ -6,45 +6,55 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="addForm" (ngSubmit)="addStop()">
-    
-    <ion-item class="itemsInputs" lines="none">
-      <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="alias" placeholder="Alias *"></ion-input>
-      </ion-item>
-    </ion-item>
+  <ion-fab id="myLocationButton" (click)="myPosition()" #buttonLocation>
+    <ion-fab-button>
+      <ion-icon name="locate"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.alias">
-        <div class="error-message"
-          *ngIf="addForm.get('alias').hasError(validation.type) && (addForm.get('alias').dirty || addForm.get('alias').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-    <ion-item class="itemsInputs" lines="none">
-      <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="barbell"></ion-icon>
-        <ion-input formControlName="coordinates" placeholder="Coordenadas *" type="number">
-        </ion-input>
-      </ion-item>
-    </ion-item>
-
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validation_messages.coordinates">
-        <div class="error-message"
-          *ngIf="addForm.get('coordinates').hasError(validation.type) && (addForm.get('coordinates').dirty || addForm.get('coordinates').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
-
-    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
-  </form>
-
-
-
+  <div id="map" [innerHtml]="safeHtml" #map>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <form [formGroup]="addForm" (ngSubmit)="addStop()">
+
+      <ion-item class="itemsInputs" lines="none">
+        <ion-item lines="none" class="ion-no-padding">
+          <ion-icon name="pricetags"></ion-icon>
+          <ion-input type="text" formControlName="alias" placeholder="Alias *"></ion-input>
+        </ion-item>
+      </ion-item>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.alias">
+          <div class="error-message"
+            *ngIf="addForm.get('alias').hasError(validation.type) && (addForm.get('alias').dirty || addForm.get('alias').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item class="itemsInputs" lines="none">
+        <ion-item lines="none" class="ion-no-padding">
+          <ion-icon name="barbell"></ion-icon>
+          <ion-input formControlName="coordinates" placeholder="Coordenadas *" type="number">
+          </ion-input>
+        </ion-item>
+      </ion-item>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.coordinates">
+          <div class="error-message"
+            *ngIf="addForm.get('coordinates').hasError(validation.type) && (addForm.get('coordinates').dirty || addForm.get('coordinates').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+
+      <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
+    </form>
+  </ion-toolbar>
+</ion-footer>
