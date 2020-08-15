@@ -8,12 +8,12 @@
 <ion-content>
 
   <div id="map" #map>
-   
+    <img src="../../../../../assets/img/pin.png" id="centerMarkerImage">
     <ion-fab id="myLocationButton" (click)="myPosition()">
       <ion-fab-button>
         <ion-icon name="locate"></ion-icon>
       </ion-fab-button>
-    </ion-fab>s
+    </ion-fab>
   </div>
 </ion-content>
 
@@ -40,20 +40,12 @@
       <ion-item class="itemsInputs" lines="none">
         <ion-item lines="none" class="ion-no-padding">
           <ion-icon name="barbell"></ion-icon>
-          <ion-input formControlName="coordinates" placeholder="Coordenadas *" type="number">
-          </ion-input>
+          <ion-label>
+            <p>Lat: {{deliveryPosition.lat}}</p>
+            <p>Lng: {{deliveryPosition.lng}}</p>
+          </ion-label>
         </ion-item>
       </ion-item>
-
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.coordinates">
-          <div class="error-message"
-            *ngIf="addForm.get('coordinates').hasError(validation.type) && (addForm.get('coordinates').dirty || addForm.get('coordinates').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-
 
       <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
     </form>

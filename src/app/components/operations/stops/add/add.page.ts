@@ -89,9 +89,6 @@ export class AddPage implements OnInit {
         alias: new FormControl('', Validators.compose([
           Validators.required,
         ])),
-        coordinates: new FormControl('', Validators.compose([
-          Validators.required,
-        ])),
       });
   
     }
@@ -113,7 +110,7 @@ export class AddPage implements OnInit {
     this.storage.get('userAuth').then((data) => {
       const record = {};
       record['alias'] = this.addForm.get('alias').value;
-      record['coordinates'] = this.addForm.get('coordinates').value;
+      record['coordinates'] = `${this.deliveryPosition.lat}-${this.deliveryPosition.lng}`;
       record['userUid'] = data.uid;
       this.stopsService.addStop(record).then((stop) => {
         console.log(stop);
@@ -205,10 +202,10 @@ export class AddPage implements OnInit {
     this.marker = this.map.addMarkerSync({
       title: 'Ubication',
       icon: {
-          url : 'http://www.myiconfinder.com/uploads/iconsets/e0100e513d89eb57b88291e0f088aac9.png',
+          url : '../../../../../assets/img/marker.png',
           size: {
-            width: 24,
-            height: 24
+            width: 26,
+            height: 26
           }
       },
       position: {
