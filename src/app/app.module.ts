@@ -22,6 +22,7 @@ import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { GooglemapsServiceService } from './services/googlemapsService/googlemaps-service.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,6 +45,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
     Diagnostic,
     Geolocation,
     LocationAccuracy,
+    LaunchNavigator,
     GooglemapsServiceService,
     Geocoder,
     SplashScreen,
