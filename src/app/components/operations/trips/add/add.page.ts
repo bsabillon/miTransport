@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Storage } from '@ionic/storage';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { StopsService } from 'src/app/services/stops.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add',
@@ -162,6 +163,19 @@ export class AddPage implements OnInit {
     this.stopsServices.getStops().subscribe(stops => {
       this.stops = stops;
     });
+  }
+
+  transformDate() {
+    const date = new Date(this.addForm.get('time').value);
+    var datePipe = new DatePipe('es-HN');
+    const fullDate = datePipe.transform(date, 'hh:mm a');
+    // console.log(fullDate);
+    this.addForm.controls.time.setValue(`${fullDate}`);
+
+    // const splitDate = date.split('T');
+    // const time = splitDate[1];
+    // const splitTime = time.split('.');
+    // const finalTime = splitTime[0];
   }
 
 

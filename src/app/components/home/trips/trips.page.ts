@@ -19,7 +19,6 @@ export class TripsPage implements OnInit {
 
   ngOnInit() {
     this.getTrips();
-   // this.isUserOnTrip("7FVnTVoUtQtihajQexe7");
   }
 
   getTrips(){

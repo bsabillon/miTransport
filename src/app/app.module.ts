@@ -22,6 +22,10 @@ import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { GooglemapsServiceService } from './services/googlemapsService/googlemaps-service.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import localeESHN from '@angular/common/locales/es-HN';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeESHN, 'es-HN');
 
 @NgModule({
   declarations: [AppComponent],

@@ -27,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: 'drive',
-    loadChildren: () => import('./components/drive/drive.module').then( m => m.DrivePageModule),
+    loadChildren: () => import('./components/drive/driveHome/drive.module').then( m => m.DrivePageModule),
     canActivate: [AuthGuard]
   },
   {

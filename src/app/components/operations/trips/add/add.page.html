@@ -28,8 +28,8 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="time" placeholder="Hora *"></ion-input>
+        <ion-icon name="time"></ion-icon>
+        <ion-datetime (ionChange)="transformDate()" formControlName="time" placeholder="Hora *" picker-format="hh:mm a" displayFormat="hh:mm a" ></ion-datetime>
       </ion-item>
     </ion-item>
 
@@ -44,8 +44,10 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="origin" placeholder="Origen *"></ion-input>
+        <ion-icon name="locate"></ion-icon>
+        <ion-select formControlName="origin" placeholder="Origen *">
+          <ion-select-option *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
+        </ion-select>
       </ion-item>
     </ion-item>
 
@@ -60,8 +62,11 @@
 
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
-        <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="destination" placeholder="Destino *"></ion-input>
+        <ion-icon name="locate"></ion-icon>
+        <ion-select formControlName="destination" placeholder="Destino: *">
+          <ion-select-option *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
+        </ion-select>
+
       </ion-item>
     </ion-item>
 
@@ -114,7 +119,7 @@
       <ion-item lines="none" class="ion-no-padding">
         <ion-icon class="firstIcon" name="trail-sign"></ion-icon>
         <ion-select formControlName="stops" placeholder="Paradas *" multiple="true ">
-          <ion-select-option *ngFor="let stop of stops">{{stop.alias}}</ion-select-option>
+          <ion-select-option [value]="stop.coordinates" *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
         </ion-select>
       </ion-item>
     </ion-item>
