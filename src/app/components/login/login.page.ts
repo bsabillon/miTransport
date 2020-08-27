@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService } from '../../services/auth.service';
 import {User } from '../../models/user.class';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { NavController, AlertController, LoadingController } from '@ionic/angular';
+import { NavController, AlertController, LoadingController, MenuController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
+  getUserSubscription: Subscription;
   user: User = new User();
   loginForm: FormGroup;
   validation_messages = {
@@ -37,6 +39,7 @@ export class LoginPage implements OnInit {
     public loadingController: LoadingController,
     private storage: Storage,
     private navCtrl: NavController,
+    public menuCtrl: MenuController,
     public formBuilder: FormBuilder,
     ) {
       this.loginForm = this.formBuilder.group({
@@ -51,21 +54,24 @@ export class LoginPage implements OnInit {
       });
      }
 
+     ngOnDestroy() {
+      ((this.getUserSubscription) !== undefined ? this.getUserSubscription.unsubscribe() : '');
+    }
+
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(false);
   }
 
   async onLogin(){
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Por favor espere...',
-      // duration: 2000
     });
     loading.present();
     const user = {};
-    // this.user.email = this.loginForm.get('email').value;
-    // this.user.password = this.loginForm.get('password').value;
-    // this.login();
-      // const personFound = this.person.find(element => element.email === this.validationsForm.get('email').value);
       this.authService.loginUser(this.loginForm.value)
       .then((res) => {
         user['email'] = res.user.email;
@@ -74,14 +80,13 @@ export class LoginPage implements OnInit {
         loading.dismiss();
       }, (error) => {
         loading.dismiss();
-        // this.errorMessage = error.message;
         console.log(error);
         this.presentAlert();
       });
     }
     
     getUser(user) {
-      this.authService.getUser(this.loginForm.get('email').value).subscribe(data => {
+      this.getUserSubscription = this.authService.getUser(this.loginForm.get('email').value).subscribe(data => {
         let person = {};
         person = data.map(e => {
           return {
@@ -93,19 +98,11 @@ export class LoginPage implements OnInit {
         user['role'] = person[0].role;
         console.log(user);
         this.storage.set('userAuth', user);
-        this.navCtrl.navigateForward('/home');
+        this.router.navigate(['/home']);
       }, (error) => {
         this.presentAlert();
       });
   }
-
-  // async login() {
-  //   const user = await this.authService.onLogin(this.user);
-  //   if (user) {
-  //     this.router.navigateByUrl('/home');
-  //     console.log('User logged in successfully');
-  //   }
-  // }
 
   async presentAlert() {
     const alert = await this.alertController.create({

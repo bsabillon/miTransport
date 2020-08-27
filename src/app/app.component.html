@@ -5,8 +5,8 @@
         <ion-list id="inbox-list">
           <ion-list-header *ngIf="userInfo != null">{{userInfo.name}}</ion-list-header>
           <ion-list-header *ngIf="userInfo == null">Usuario</ion-list-header>
-          <ion-note *ngIf="userInfo != null">{{userInfo.email}}</ion-note>
-          <ion-note *ngIf="userInfo == null">usuario@transporte.com</ion-note>
+          <ion-note *ngIf="userInfo != null">{{userInfo.role}}</ion-note>
+          <ion-note *ngIf="userInfo == null">usuario@step.com</ion-note>
 
           <ion-menu-toggle auto-hide="false" >
           <ion-item routerDirection="root" *ngIf="isAdmin" routerLink="/drive" lines="none"

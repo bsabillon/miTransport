@@ -4,7 +4,6 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {Router} from '@angular/router';
-import {AngularFireAuth} from '@angular/fire/auth';
 import { AuthService } from './services/auth.service';
 import { Storage } from '@ionic/storage';
 
@@ -26,13 +25,16 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private storage: Storage,
-    private afAuth: AngularFireAuth
   ) {
     this.initializeApp();
   }
 
   onLogOut(){
-   this.authService.onLogOut();
+  // this.authService.onLogOut();
+  this.authService.isWsAvailable.next(false);
+  this.storage.clear();
+  this.router.navigate(['/login'])
+
   }
 
   initializeApp() {
@@ -45,11 +47,22 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // this.authService.isLogged();
     // this.authService.isAdmin();
-    this.getUser();
+
+    this.authService.isWsAvailable.subscribe((value) => {
+      if (true == value) {
+        console.log('true/v');
+        this.getUser();
+      } else {
+        console.log('false/f');
+        this.userInfo = null;
+      }
+    })
+   
   }
   
   ionViewWillEnter() {
     this.getUser();
+    console.log("view entered");
   }
 
   getUser() {
@@ -59,9 +72,11 @@ export class AppComponent implements OnInit {
         this.userInfo = data;
         if(data.role=="admin"){
           this.isAdmin= true;
+          console.log(data.name+ " is admin");
         }
       } else {
         this.userInfo = null;
+        console.log(data.name+ " is not admin");
       }
     });
   }

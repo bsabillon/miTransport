@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from '../models/user.class';
 import { Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Storage } from '@ionic/storage';
 
@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
   providedIn: 'root'
 })
 export class AuthService {
+  public isWsAvailable: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private isLog = false;
   private isAdmininistrator = false;
   constructor(public afAuth: AngularFireAuth,
@@ -19,7 +20,7 @@ export class AuthService {
     private router: Router, private afs: AngularFirestore) {
     this.usersCollection = afs.collection<User>('users');
     this.users = this.usersCollection.valueChanges();
-    this.getCurrentUser();
+    //this.getCurrentUser();
   }
   private usersCollection: AngularFirestoreCollection<User>;
   private users: Observable<User[]>;
@@ -76,7 +77,7 @@ export class AuthService {
     )
     return this.isAdmininistrator;
   };
-
+/*
   async getCurrentUser() {
     this.afAuth.authState.subscribe((authUser)=>{
       this.getUserByUid(authUser.uid).subscribe((FSuser)=>{
@@ -86,6 +87,11 @@ export class AuthService {
     }
     )
 
+  }
+*/
+
+  passwordRecovery(email) {
+    return this.afAuth.sendPasswordResetEmail(email);
   }
 
 
