@@ -13,7 +13,7 @@
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
         <ion-icon name="pricetags"></ion-icon>
-        <ion-input type="text" formControlName="recurrency" placeholder="Recurrencia *"></ion-input>
+        <ion-input type="text" formControlName="recurrency" placeholder="Alias *"></ion-input>
       </ion-item>
     </ion-item>
 
@@ -46,7 +46,7 @@
       <ion-item lines="none" class="ion-no-padding">
         <ion-icon name="locate"></ion-icon>
         <ion-select formControlName="origin" placeholder="Origen *">
-          <ion-select-option *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
+          <ion-select-option [value]="stop.coordinates" *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
         </ion-select>
       </ion-item>
     </ion-item>
@@ -64,7 +64,7 @@
       <ion-item lines="none" class="ion-no-padding">
         <ion-icon name="locate"></ion-icon>
         <ion-select formControlName="destination" placeholder="Destino: *">
-          <ion-select-option *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
+          <ion-select-option  [value]="stop.coordinates" *ngFor="let stop of stops">{{stop.alias}} </ion-select-option>
         </ion-select>
 
       </ion-item>

@@ -13,7 +13,7 @@
   <ion-card class="tripCards" *ngFor="let trip of trips">
     <ion-card-title>
      
-    {{trip.origin}} - {{trip.destination}}
+    {{trip.recurrency}}
     </ion-card-title>
     <ion-card-subtitle>
       {{trip.time}}
@@ -21,7 +21,7 @@
     <ion-item lines="none">
       <ion-icon name="people" slot="start"></ion-icon>
       <ion-label>{{trip.driver}}</ion-label>
-      <ion-button fill="outline" routerLink="/view-route-trip" slot="end">Iniciar</ion-button>
+      <ion-button fill="outline" routerLink="/view-route-trip" [queryParams]="{tripId: trip.id}" slot="end">Iniciar</ion-button>
     </ion-item>
 
   </ion-card>

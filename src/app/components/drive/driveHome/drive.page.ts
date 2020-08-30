@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TripsService } from 'src/app/services/trips.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-drive',
@@ -10,11 +10,15 @@ import { Router } from '@angular/router';
 export class DrivePage implements OnInit {
   public trips: any = [];
 
+
   constructor(
     public tripsServices: TripsService, 
     public router: Router,
+   
 
-  ) { }
+  ) {
+    
+   }
 
   ngOnInit() {
     this.getTrips();
@@ -23,10 +27,8 @@ export class DrivePage implements OnInit {
   getTrips(){
     this.tripsServices.getTrips().subscribe(trips => {
       this.trips = trips;
+      console.log(trips);
     });
-
-
-    
   }
 
 }

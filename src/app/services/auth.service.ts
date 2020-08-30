@@ -20,7 +20,7 @@ export class AuthService {
     private router: Router, private afs: AngularFirestore) {
     this.usersCollection = afs.collection<User>('users');
     this.users = this.usersCollection.valueChanges();
-    //this.getCurrentUser();
+    this.getCurrentUser();
   }
   private usersCollection: AngularFirestoreCollection<User>;
   private users: Observable<User[]>;
@@ -77,7 +77,7 @@ export class AuthService {
     )
     return this.isAdmininistrator;
   };
-/*
+
   async getCurrentUser() {
     this.afAuth.authState.subscribe((authUser)=>{
       this.getUserByUid(authUser.uid).subscribe((FSuser)=>{
@@ -88,7 +88,7 @@ export class AuthService {
     )
 
   }
-*/
+
 
   passwordRecovery(email) {
     return this.afAuth.sendPasswordResetEmail(email);

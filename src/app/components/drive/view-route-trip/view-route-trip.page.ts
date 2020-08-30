@@ -4,8 +4,9 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Diagnostic } from '@ionic-native/diagnostic/ngx';
 import { LoadingController, ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { TripsService } from 'src/app/services/trips.service';
 
 declare var google;
 
@@ -36,7 +37,8 @@ export class ViewRouteTripPage implements OnInit {
   orderStatus: string;
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
-
+  public trip: any = [];
+  public tripId: string;
   // parque simon bolivar
   origin = { lat: 15.477133, lng: -88.016935 };
   // Parque la 93
@@ -82,17 +84,38 @@ export class ViewRouteTripPage implements OnInit {
     private locationAccuracy: LocationAccuracy,
     public toastController: ToastController,
     public actionSheetController: ActionSheetController,
-  ) { }
+    public tripsServices: TripsService, 
+    public route : ActivatedRoute
+  ) {
+    this.tripId = route.snapshot.queryParamMap.get('tripId');
+    console.log(this.tripId);
+   }
 
   ngOnInit() {
-    // this.loadMap();
-    this.loadMap();
+   //this.loadAll();
+   this.getTrip();
+
   }
+
+async loadAll(){
+  await this.getTrip();
+  //this.loadMap();
+}
+
+  getTrip(){
+    this.tripsServices.getTrip(this.tripId).subscribe(trip => {
+      this.trip = trip;
+      this.loadMap(trip);
+     // console.log(trip);
+    });
+  }
+
+
 
   verifyEnabledLocation() {
     this.diagnostic.isLocationEnabled().then(success => {
       console.log('verificando isLocationEnabled ', success);
-      (success) ? this.loadMap() : this.requestEnabledLocation();
+      (success) ? this.loadMap(this.trip) : this.requestEnabledLocation();
     }, error => {
       console.log('error', error);
     });
@@ -105,7 +128,7 @@ export class ViewRouteTripPage implements OnInit {
         this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
           () => {
             console.log('Request successful');
-            this.loadMap();
+            this.loadMap(this.trip);
           },
           error => {
             this.router.navigate(['/home']);
@@ -116,10 +139,16 @@ export class ViewRouteTripPage implements OnInit {
     });
   }
 
-  loadMap() {
+  loadMap(trip) {
+   // console.log(trip);
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.origin.lat = resp.coords.latitude;
-      this.origin.lng = resp.coords.longitude;
+      const originSplit = trip.origin.split(',');
+      this.origin.lat = parseFloat(originSplit[0]);
+      this.origin.lng = parseFloat(originSplit[1]);
+      const destinationSplit = trip.destination.split(',');
+      this.destination.lat = parseFloat(destinationSplit[0]);
+      this.destination.lng = parseFloat(destinationSplit[1]);
+
       console.log(this.origin);
       // create a new map by passing HTMLElement
       const mapEle: HTMLElement = document.getElementById('map');
@@ -151,17 +180,24 @@ export class ViewRouteTripPage implements OnInit {
       // this.addMarker(marker);
       mapEle.classList.add('show-map');
           // this.renderMarkers();
-      this.calculateRoute(this.origin);
+      const wayPoints: any=[];
+      trip.stops.forEach(e => {
+        const stopSplit = e.split(',');
+        wayPoints.push({location: { lat: parseFloat(stopSplit[0]), lng: parseFloat(stopSplit[1]) },
+          stopover: true,})
+      });
+      this.calculateRoute(this.origin,wayPoints,this.destination);
     });
   });
   }
 
-  private calculateRoute(currentLocation) {
-    console.log(`D: ${this.destination.lng}`);
+
+  private calculateRoute(currentLocation, wayPoints, destination) {
+   console.log(wayPoints);
     this.directionsService.route({
       origin: currentLocation,
-      destination: this.destination,
-      waypoints: this.wayPoints,
+      destination: destination,
+      waypoints: wayPoints,
       // optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING,
     }, (response, status)  => {

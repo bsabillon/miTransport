@@ -55,7 +55,7 @@ export class LoginPage implements OnInit, OnDestroy {
      }
 
      ngOnDestroy() {
-      ((this.getUserSubscription) !== undefined ? this.getUserSubscription.unsubscribe() : '');
+     ((this.getUserSubscription) !== undefined ? this.getUserSubscription.unsubscribe() : '');
     }
 
   ngOnInit() {
@@ -86,7 +86,8 @@ export class LoginPage implements OnInit, OnDestroy {
     }
     
     getUser(user) {
-      this.getUserSubscription = this.authService.getUser(this.loginForm.get('email').value).subscribe(data => {
+      this.getUserSubscription = 
+      this.authService.getUser(this.loginForm.get('email').value).subscribe(data => {
         let person = {};
         person = data.map(e => {
           return {

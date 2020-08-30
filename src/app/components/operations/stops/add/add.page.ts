@@ -110,7 +110,7 @@ export class AddPage implements OnInit {
     this.storage.get('userAuth').then((data) => {
       const record = {};
       record['alias'] = this.addForm.get('alias').value;
-      record['coordinates'] = `${this.deliveryPosition.lat}-${this.deliveryPosition.lng}`;
+      record['coordinates'] = `${this.deliveryPosition.lat},${this.deliveryPosition.lng}`;
       record['userUid'] = data.uid;
       this.stopsService.addStop(record).then((stop) => {
         console.log(stop);

@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {Router} from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { Storage } from '@ionic/storage';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 
 @Component({
@@ -25,12 +26,13 @@ export class AppComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private storage: Storage,
+    private afAuth: AngularFireAuth
   ) {
     this.initializeApp();
   }
 
   onLogOut(){
-  // this.authService.onLogOut();
+  //this.authService.onLogOut();
   this.authService.isWsAvailable.next(false);
   this.storage.clear();
   this.router.navigate(['/login'])
@@ -47,7 +49,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // this.authService.isLogged();
     // this.authService.isAdmin();
-
+   // this.getUser();
     this.authService.isWsAvailable.subscribe((value) => {
       if (true == value) {
         console.log('true/v');
