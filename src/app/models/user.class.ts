@@ -4,5 +4,5 @@ export class User {
     name?: String;
     role?: string;
     phone?: string;
-    company?: string;
+    companyId?: string;
 }

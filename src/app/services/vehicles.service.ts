@@ -14,8 +14,8 @@ export class VehiclesService {
 
 
   constructor(public afStore: AngularFirestore, public authService: AuthService) {
-    const idCurrentUser = this.authService.currentUser.uid;
-    this.vehiclesCollection = this.afStore.collection<Vehicle>('vehicles', ref => ref.where('userUid','==',idCurrentUser ));
+    const currentCompany = this.authService.currentUser.companyId; 
+    this.vehiclesCollection = this.afStore.collection<Vehicle>('vehicles', ref => ref.where('companyId','==',currentCompany ));
     this.vehicles = this.vehiclesCollection.valueChanges();
    }
 
@@ -57,11 +57,8 @@ getVehicles(){
     return this.vehiclesCollection.doc(id).set(record);
   }
 
-  updateVehicle(vehicle: Vehicle):void{
-    let vehicleId = vehicle.id;
-    this.vehicleDoc = this.afStore.doc<Vehicle>
-    (`vehicles/${vehicleId}`);
-    this.vehicleDoc.update(vehicle);
+  updateVehicle(id, record){
+    return this.vehiclesCollection.doc(id).update(record);
   }
 
   deleteVehicle(vehicleId: string):void {

@@ -105,8 +105,14 @@ const routes: Routes = [
   },
   {
     path: 'view-route-trip',
-    loadChildren: () => import('./components/drive/view-route-trip/view-route-trip.module').then( m => m.ViewRouteTripPageModule)
-  }
+    loadChildren: () => import('./components/drive/view-route-trip/view-route-trip.module').then( m => m.ViewRouteTripPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'home/trip-details',
+    loadChildren: () => import('./components/home/trip-details/trip-details.module').then( m => m.TripDetailsPageModule),
+    canActivate: [AuthGuard]
+  },
 
 ];
 

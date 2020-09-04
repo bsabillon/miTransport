@@ -111,7 +111,7 @@ export class AddPage implements OnInit {
       const record = {};
       record['alias'] = this.addForm.get('alias').value;
       record['coordinates'] = `${this.deliveryPosition.lat},${this.deliveryPosition.lng}`;
-      record['userUid'] = data.uid;
+      record['companyId'] = data.companyId;
       this.stopsService.addStop(record).then((stop) => {
         console.log(stop);
         this.presentToast('¡La parada se agregó correctamente!');

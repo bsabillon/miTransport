@@ -1,12 +1,16 @@
 <ion-header>
+  <div (swipe)="swipeEvent($event)">
+    <ion-row>
+      <ion-icon class="dragIcon"  color="primary" name="reorder-two"></ion-icon>
+    </ion-row>
+  </div>
   <ion-toolbar color="primary">
-    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
-    <ion-title>Agregar Vehiculo</ion-title>
+    <ion-title>Vehiculo</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="addForm" (ngSubmit)="addVehicle()">
+  <form [formGroup]="addForm" (ngSubmit)="setVehicle()">
     <ion-item class="itemsInputs" lines="none">
       <ion-item lines="none" class="ion-no-padding">
         <ion-icon name="pricetags"></ion-icon>
@@ -56,25 +60,9 @@
         </div>
       </ng-container>
     </div>
-    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Agregar</ion-button>
+    <ion-button class="register" expand="block" type="submit" [disabled]="!addForm.valid">Guardar</ion-button>
   </form>
-  <!-- <form #formVehicle="ngForm" (ngSubmit)="addVehicle(formVehicle)"> 
-    <input type="hidden" name="id" [(ngModel)]="this.vehiclesService.selectedVehicle.id"  >
-    <ion-item>
-      <br>
-        <ion-label color="dark"  position="floating" > Alias </ion-label>
-        <ion-input name="alias" type="text" [(ngModel)]="this.vehiclesService.selectedVehicle.alias" ></ion-input>
-    </ion-item>
-    <ion-item>
-      <br>
-        <ion-label color="dark"  position="floating" > Capacidad </ion-label>
-        <ion-input name="capacity" type="number" [(ngModel)]="this.vehiclesService.selectedVehicle.capacity"></ion-input>
-    </ion-item>
-    <br>
-    
-    <ion-button  type="submit" expand="block" routerLink="/vehicles-home" > Agregar</ion-button>
 
-  </form> -->
 
 
 </ion-content>

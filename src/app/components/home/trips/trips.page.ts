@@ -24,25 +24,11 @@ export class TripsPage implements OnInit {
   getTrips(){
     this.tripsServices.getTrips().subscribe(trips => {
       this.trips = trips;
+      console.log(trips);
     });
   }
 
-  isUserOnTrip(tripId: string){
-    this.tripsServices.getTrip(tripId).subscribe((selectedTrip)=>{
-      let passengers  =selectedTrip.passengers;
-      this.storage.get('userAuth').then((data)=>{
-        console.log(passengers);
-       if(passengers == data.name){
-         console.log("true");
-        }
-        else{
-          console.log("false");
-        }
-      })
-      
-    })
-    
-  }
+
 
 
 }

@@ -15,8 +15,8 @@ export class PassengersTripsService {
     public afStore: AngularFirestore,
     public authService: AuthService
   ) {
-    const companyCurrentUser = this.authService.currentUser.company;
-    this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('userUid','==',companyCurrentUser ));
+    const currentCompany = this.authService.currentUser.companyId;
+    this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('userUid','==',currentCompany ));
     this.trips = this.tripsCollection.valueChanges();
    }
 

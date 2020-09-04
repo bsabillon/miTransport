@@ -50,7 +50,7 @@ export class AddPage implements OnInit {
       const record = {};
       record['name'] = this.addForm.get('name').value;
       record['email'] = this.addForm.get('email').value;
-      record['userUid'] = data.uid;
+      record['companyId'] = data.companyId;
       this.driversService.addDriver(record).then((driver) => {
         console.log(driver);
         this.presentToast('¡El conductor se agregó correctamente!');

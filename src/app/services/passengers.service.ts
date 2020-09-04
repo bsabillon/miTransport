@@ -13,10 +13,13 @@ import { AuthService } from './auth.service';
 })
 export class PassengersService {
 
-  constructor(public afStore: AngularFirestore,public authService: AuthService) { 
-    const idCurrentUser = this.authService.currentUser.uid;  
-
-    this.usersCollection = this.afStore.collection<User>('users', ref => ref.where('company','==',idCurrentUser ))
+  constructor(
+    public afStore: AngularFirestore,
+    public authService: AuthService
+    )
+    { 
+    const currentCompany = this.authService.currentUser.companyId; 
+    this.usersCollection = this.afStore.collection<User>('users', ref => ref.where('companyId','==',currentCompany ))
     this.users = this.usersCollection.valueChanges();
 
   }

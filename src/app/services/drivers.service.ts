@@ -12,9 +12,13 @@ import { AuthService } from './auth.service';
 })
 export class DriversService {
 
-  constructor(public afStore: AngularFirestore,public authService: AuthService) { 
-    const idCurrentUser = this.authService.currentUser.uid;
-    this.driversCollection = this.afStore.collection<Driver>('drivers', ref => ref.where('userUid','==',idCurrentUser ));
+  constructor(
+    public afStore: AngularFirestore,
+    public authService: AuthService
+    )
+    { 
+    const currentCompany = this.authService.currentUser.companyId; 
+    this.driversCollection = this.afStore.collection<Driver>('drivers', ref => ref.where('companyId','==',currentCompany ));
     this.drivers = this.driversCollection.valueChanges();
   }
 

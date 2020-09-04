@@ -71,7 +71,7 @@ export class RegisterPage implements OnInit {
         Validators.minLength(8),
         // Validators.pattern('/^-?(0|[1-9]\d*)?$/'),
       ])),
-      company: new FormControl('', Validators.compose([
+      companyId: new FormControl('', Validators.compose([
         Validators.required,
       ])),
       
@@ -112,7 +112,6 @@ export class RegisterPage implements OnInit {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Por favor espere...',
-      // duration: 2000
     });
     loading.present();
     (this.personType == 'passenger') ? console.log(this.registerClientForm.value) : console.log(this.registerAdminForm.value); //to print test
@@ -129,10 +128,9 @@ export class RegisterPage implements OnInit {
       : this.user.name = this.registerAdminForm.get('name').value;
       (this.personType == 'passenger') ? this.user.phone = this.registerClientForm.get('phone').value
       : this.user.phone = this.registerAdminForm.get('phone').value;
-      (this.personType == 'passenger') ? this.user.company = this.registerClientForm.get('company').value
-      //if (this.personType != 'passenger') {
-      :this.user.company = this.registerAdminForm.get('company').value;
-     // } 
+      (this.personType == 'passenger') ? this.user.companyId = this.registerClientForm.get('companyId').value
+      :this.user.companyId = res.user.uid;
+
       this.storage.set('userAuth', this.user);
       this.createUser(this.user);
       loading.dismiss();
@@ -150,9 +148,7 @@ export class RegisterPage implements OnInit {
     record['name'] = user.name;
     record['role'] = user.role;
     record['phone'] = user.phone;
-    //if (this.personType != 'passenger') {
-    record['company'] = user.company;
-   // } 
+    record['companyId'] = user.companyId;
     this.authService.createUser(record).then(resp => {
       this.navCtrl.navigateForward('/home');
     }).catch(error => {

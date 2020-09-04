@@ -16,8 +16,8 @@ export class TripsService {
     public authService: AuthService
     ) 
     {
-    const idCurrentUser = this.authService.currentUser.uid;
-    this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('userUid','==',idCurrentUser ));
+    const currentCompany = this.authService.currentUser.companyId;
+    this.tripsCollection = this.afStore.collection<Trip>('trips', ref => ref.where('companyId','==',currentCompany ));
     this.trips = this.tripsCollection.valueChanges();
    }
 

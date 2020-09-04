@@ -93,10 +93,14 @@ export class LoginPage implements OnInit, OnDestroy {
           return {
             name: e.payload.doc.data()['name'],
             role: e.payload.doc.data()['role'],
+            companyId: e.payload.doc.data()['companyId'],
+            phone: e.payload.doc.data()['phone'],
           };
         });
         user['name'] = person[0].name;
         user['role'] = person[0].role;
+        user['companyId'] = person[0].companyId;
+        user['phone'] = person[0].phone;
         console.log(user);
         this.storage.set('userAuth', user);
         this.router.navigate(['/home']);

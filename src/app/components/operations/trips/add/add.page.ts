@@ -119,7 +119,7 @@ export class AddPage implements OnInit {
       record['driver'] = this.addForm.get('driver').value;
       record['passengers'] = this.addForm.get('passengers').value;
       record['vehicle'] = this.addForm.get('vehicle').value;
-      record['userUid'] = data.uid;
+      record['companyId'] = data.companyId;
       this.tripsServices.addTrip(record).then((trip) => {
         console.log(trip);
         this.presentToast('¡El viaje se agregó correctamente!');

@@ -2,7 +2,7 @@
   <ion-toolbar color="primary">
     <ion-back-button slot="start" defaultHref="#"></ion-back-button>
     <ion-buttons slot="end">
-      <ion-button routerLink="/vehicles/add">
+      <ion-button (click)="openAddVehicleModal()">
         <ion-icon slot="icon-only" ios="add" md="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -18,7 +18,7 @@
   <div *ngFor="let vehicle of vehicles">
 
     <ion-item-sliding>
-      <ion-item>
+      <ion-item (click)="updateVehicle(vehicle)" >
 
         <ion-card-header>
           <ion-card-title>{{vehicle.alias}}</ion-card-title>
