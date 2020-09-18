@@ -74,7 +74,6 @@ export class RegisterPage implements OnInit {
       companyId: new FormControl('', Validators.compose([
         Validators.required,
       ])),
-      
     });
     this.registerAdminForm = this.formBuilder.group({
       name: new FormControl('', Validators.compose([
@@ -168,15 +167,6 @@ export class RegisterPage implements OnInit {
 
     await alert.present();
   }
-
-  // async register() {
-  //   const user = await this.authService.onRegister(this.user);
-
-  //   if(user){
-  //     console.log('User created successfully');
-  //     this.router.navigateByUrl('/home');
-  //   }
-  // }
 
   togglePasswordMode() {
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';

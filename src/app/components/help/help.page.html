@@ -15,7 +15,74 @@
   </ion-header>
 
   <div id="container">
-    <ion-button expand="block">Proximamente</ion-button>
-    
+    <form *ngIf="!isAdmin" [formGroup]="helpForm" (ngSubmit)="sendMessage()">
+      <ion-item class="itemsInputs" lines="none">
+        <ion-item lines="none" class="ion-no-padding">
+          <ion-icon name="person"></ion-icon>
+          <ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
+        </ion-item>
+      </ion-item>
+      
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.name">
+          <div class="error-message"
+          *ngIf="helpForm.get('name').hasError(validation.type) && (helpForm.get('name').dirty || helpForm.get('name').touched)">
+          {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+      
+      <ion-item class="itemsInputs" lines="none">
+        <ion-item lines="none" class="ion-no-padding">
+          <ion-icon name="pricetags"></ion-icon>
+          <ion-input type="text" formControlName="issue" placeholder="Asunto"></ion-input>
+        </ion-item>
+      </ion-item>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.issue">
+          <div class="error-message"
+            *ngIf="helpForm.get('issue').hasError(validation.type) && (helpForm.get('issue').dirty || helpForm.get('issue').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-item class="itemsInputs" lines="none">
+        <ion-item lines="none" class="ion-no-padding">
+          <div class="textArea">
+            <ion-textarea rows="6" cols="30" formControlName="message" placeholder="Mensaje..."></ion-textarea>
+          </div>
+        </ion-item>
+      </ion-item>
+
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validation_messages.message">
+          <div class="error-message"
+            *ngIf="helpForm.get('message').hasError(validation.type) && (helpForm.get('message').dirty || helpForm.get('message').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
+
+      <ion-button class="helpBTN" expand="block" type="submit" [disabled]="!helpForm.valid">Enviar
+      </ion-button>
+    </form>
+
+    <div *ngIf="isAdmin">
+      <div *ngIf="messageList.length == 0">
+        <h4>¡Aún no tienes mensajes de tus usuarios!</h4>
+      </div>
+      <div *ngFor="let item of messageList">
+        <ion-item>
+          <ion-label>
+            <h3><b>Asunto:</b> {{item.issue}}</h3>
+            <p><b>Mensaje:</b> {{item.message}}</p>
+            <p><b>De:</b> {{item.userName}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </div>
+
   </div>
 </ion-content>

@@ -101,7 +101,7 @@
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.company">
             <div class="error-message"
-              *ngIf="registerAdminForm.get('company').hasError(validation.type) && (registerAdminForm.get('company').dirty || registerAdminForm.get('company').touched)">
+              *ngIf="registerClientForm.get('company').hasError(validation.type) && (registerClientForm.get('company').dirty || registerClientForm.get('company').touched)">
               {{ validation.message }}
             </div>
           </ng-container>

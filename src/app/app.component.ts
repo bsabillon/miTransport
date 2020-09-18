@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { Storage } from '@ionic/storage';
-import {AngularFireAuth} from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -31,11 +31,11 @@ export class AppComponent implements OnInit {
     this.initializeApp();
   }
 
-  onLogOut(){
-  //this.authService.onLogOut();
-  this.authService.isWsAvailable.next(false);
-  this.storage.clear();
-  this.router.navigate(['/login'])
+  onLogOut() {
+    //this.authService.onLogOut();
+    this.authService.isWsAvailable.next(false);
+    this.storage.clear();
+    this.router.navigate(['/login'])
 
   }
 
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     // this.authService.isLogged();
     // this.authService.isAdmin();
-   // this.getUser();
+    // this.getUser();
     this.authService.isWsAvailable.subscribe((value) => {
       if (true == value) {
         console.log('true/v');
@@ -59,9 +59,9 @@ export class AppComponent implements OnInit {
         this.userInfo = null;
       }
     })
-   
+
   }
-  
+
   ionViewWillEnter() {
     this.getUser();
     console.log("view entered");
@@ -72,13 +72,17 @@ export class AppComponent implements OnInit {
       console.log(data);
       if (data) {
         this.userInfo = data;
-        if(data.role=="admin"){
-          this.isAdmin= true;
-          console.log(data.name+ " is admin");
+        if (data.role == "admin") {
+          this.isAdmin = true;
+          console.log(data.name + " is admin");
+        } else {
+          this.isAdmin = false;
+          console.log(data.name + " is passenger");
         }
       } else {
         this.userInfo = null;
-        console.log(data.name+ " is not admin");
+        this.isAdmin = false;
+        console.log(data.name + " is not admin");
       }
     });
   }
