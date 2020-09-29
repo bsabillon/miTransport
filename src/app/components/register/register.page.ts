@@ -37,7 +37,10 @@ export class RegisterPage implements OnInit {
       { type: 'required', message: 'El celular es requerido.' },
       { type: 'minlength', message: 'El celular debe tener al menos 8 dígitos.' },
       // { type: 'pattern', message: 'Solo debe ingresar números.'}
-    ]
+    ],
+    companyId: [
+      { type: 'required', message: 'El Id de la empresa es requerido.' },
+    ],
   };
 
   passwordTypeInput = 'password';

@@ -99,9 +99,9 @@
         </ion-item>
 
         <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.company">
+          <ng-container *ngFor="let validation of validation_messages.companyId">
             <div class="error-message"
-              *ngIf="registerClientForm.get('company').hasError(validation.type) && (registerClientForm.get('company').dirty || registerClientForm.get('company').touched)">
+              *ngIf="registerClientForm.get('companyId').hasError(validation.type) && (registerClientForm.get('companyId').dirty || registerClientForm.get('companyId').touched)">
               {{ validation.message }}
             </div>
           </ng-container>
