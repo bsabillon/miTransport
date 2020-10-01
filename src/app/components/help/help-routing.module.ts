@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: HelpPage
-  }
+  },
+  {
+    path: 'help-admin',
+    loadChildren: () => import('./help-admin/help-admin.module').then( m => m.HelpAdminPageModule)
+  },
 ];
 
 @NgModule({

@@ -15,74 +15,76 @@
   </ion-header>
 
   <div id="container">
-    <form *ngIf="!isAdmin" [formGroup]="helpForm" (ngSubmit)="sendMessage()">
-      <ion-item class="itemsInputs" lines="none">
-        <ion-item lines="none" class="ion-no-padding">
-          <ion-icon name="person"></ion-icon>
-          <ion-input type="text" formControlName="name" placeholder="Nombre"></ion-input>
-        </ion-item>
-      </ion-item>
-      
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.name">
-          <div class="error-message"
-          *ngIf="helpForm.get('name').hasError(validation.type) && (helpForm.get('name').dirty || helpForm.get('name').touched)">
-          {{ validation.message }}
-          </div>
-        </ng-container>
+    <div *ngIf="!isAdmin">
+      <div *ngFor="let message of messageList; let index = index">
+        <div id="{{index}}" *ngIf="message.role == 'passenger'">
+          <ion-row class="chatContent ion-no-padding">
+            <ion-col [size]=12>
+              <div class="chat-column company">
+                <div class="item">
+                  <div class="chat-message">{{message.message}}</div>
+                  <!-- <div class="message-date">{{today | date:'short'}}</div> -->
+                </div>
+              </div>
+            </ion-col>
+
+            <ion-col [size]="12" class="ion-text-left chat-column company">
+              <div class="item">
+                <div class="message-date">{{convertUnixToDate(message.dateSplit)}}</div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
+
+        <div id="{{index}}" *ngIf="message.role == 'admin'">
+          <ion-row class="chatContent ion-no-padding">
+            <ion-col [size]=12>
+              <div class="chat-column customer">
+                <div class="item">
+                  <div class="chat-message">{{message.message}}</div>
+                  <!-- <div class="message-date">{{today | date:'short'}}</div> -->
+                </div>
+              </div>
+            </ion-col>
+            <ion-col [size]="12" class="ion-text-left chat-column customer">
+              <div class="item">
+                <div class="message-date">{{convertUnixToDate(message.dateSplit)}}</div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </div>
       </div>
-      
-      <ion-item class="itemsInputs" lines="none">
-        <ion-item lines="none" class="ion-no-padding">
-          <ion-icon name="pricetags"></ion-icon>
-          <ion-input type="text" formControlName="issue" placeholder="Asunto"></ion-input>
-        </ion-item>
-      </ion-item>
-
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.issue">
-          <div class="error-message"
-            *ngIf="helpForm.get('issue').hasError(validation.type) && (helpForm.get('issue').dirty || helpForm.get('issue').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-
-      <ion-item class="itemsInputs" lines="none">
-        <ion-item lines="none" class="ion-no-padding">
-          <div class="textArea">
-            <ion-textarea rows="6" cols="30" formControlName="message" placeholder="Mensaje..."></ion-textarea>
-          </div>
-        </ion-item>
-      </ion-item>
-
-      <div class="validation-errors">
-        <ng-container *ngFor="let validation of validation_messages.message">
-          <div class="error-message"
-            *ngIf="helpForm.get('message').hasError(validation.type) && (helpForm.get('message').dirty || helpForm.get('message').touched)">
-            {{ validation.message }}
-          </div>
-        </ng-container>
-      </div>
-
-      <ion-button class="helpBTN" expand="block" type="submit" [disabled]="!helpForm.valid">Enviar
-      </ion-button>
-    </form>
+    </div>
 
     <div *ngIf="isAdmin">
-      <div *ngIf="messageList.length == 0">
-        <h4>¡Aún no tienes mensajes de tus usuarios!</h4>
+      <div *ngIf="roomList.length == 0">
+        <h4 style="text-align: center;">¡Aún no tienes mensajes de tus usuarios!</h4>
       </div>
-      <div *ngFor="let item of messageList">
-        <ion-item>
-          <ion-label>
-            <h3><b>Asunto:</b> {{item.issue}}</h3>
-            <p><b>Mensaje:</b> {{item.message}}</p>
-            <p><b>De:</b> {{item.userName}}</p>
-          </ion-label>
-        </ion-item>
+      <div class="roomContent" *ngIf="roomList.length > 0">
+        <div *ngFor="let item of roomList">
+          <ion-item>
+            <ion-label>
+              <h3>Cliente: {{item.name}}</h3>
+            </ion-label>
+            <ion-button class="roomButton" routerLink="/help/help-admin" [queryParams]="{userId: item.userId, userName: item.name}"
+              fill="outline" slot="end">Ver</ion-button>
+          </ion-item>
+        </div>
       </div>
     </div>
 
   </div>
 </ion-content>
+
+<ion-footer *ngIf="!isAdmin" class="no-padding btn-finish">
+  <!-- BEGIN : chatSend -->
+  <form [formGroup]="messageForm">
+    <div class="chatSend">
+      <input type="text" class="sendText" formControlName="text_message" placeholder="Enviar Mensaje">
+      <div id="send-message" (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </div>
+    </div>
+  </form>
+  <!-- END : chatSend -->
+</ion-footer>

@@ -1,24 +1,24 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
 import { HelpService } from 'src/app/services/help.service';
 
 @Component({
-  selector: 'app-help',
-  templateUrl: './help.page.html',
-  styleUrls: ['./help.page.scss'],
+  selector: 'app-help-admin',
+  templateUrl: './help-admin.page.html',
+  styleUrls: ['./help-admin.page.scss'],
 })
-export class HelpPage implements OnInit {
+export class HelpAdminPage implements OnInit {
   existRoomSubs: Subscription;
   messageSubs: Subscription;
   roomsSubs: Subscription;
   messageForm: FormGroup;
   messageList: any = [];
-  roomList: any = [];
-  isAdmin: boolean;
+  userId: any;
+  userName: any;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -26,7 +26,10 @@ export class HelpPage implements OnInit {
     public loadingController: LoadingController,
     public toastController: ToastController,
     private helpService: HelpService,
+    public route : ActivatedRoute,
   ) {
+    this.userId = route.snapshot.queryParamMap.get('userId');
+    this.userName = route.snapshot.queryParamMap.get('userName');
     this.messageForm = formBuilder.group({
       text_message: new FormControl('', Validators.required),
     });
@@ -40,31 +43,17 @@ export class HelpPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    (this.roomsSubs == undefined) ? '' : this.roomsSubs.unsubscribe();
     (this.messageSubs == undefined) ? '' : this.messageSubs.unsubscribe();
   }
 
   getIfAdmin() {
     this.storage.get('userAuth').then((data) => {
-      if (data.role === 'admin') {
-        this.isAdmin = true;
-        this.getRooms();
-      } else {
-        this.isAdmin = false;
-        this.getMessages(data.companyId, data.uid);
-      }
+        this.getMessages(data.companyId);
     });
   }
 
-  getRooms() {
-    this.roomsSubs = this.helpService.getRooms().subscribe((rooms) => {
-      this.roomList = rooms;
-      console.log(this.roomList);
-    });
-  }
-
-  getMessages(companyId, userId) {
-    this.messageSubs = this.helpService.getMessage(companyId, userId).subscribe((messages) => {
+  getMessages(companyId) {
+    this.messageSubs = this.helpService.getMessage(companyId, this.userId).subscribe((messages) => {
       this.messageList = messages;
       console.log(this.messageList);
     });
@@ -78,7 +67,7 @@ export class HelpPage implements OnInit {
   sendMessage() {
     if (this.messageForm.get('text_message').value) {
       this.storage.get('userAuth').then((data) => {
-        this.existRoomSubs = this.helpService.existRoom(data.companyId, data.uid).subscribe((result) => {
+        this.existRoomSubs = this.helpService.existRoom(data.companyId, this.userId).subscribe((result) => {
           if (result.exists) {
             const recordMessage = {};
             recordMessage['message'] = this.messageForm.get('text_message').value;
@@ -93,7 +82,7 @@ export class HelpPage implements OnInit {
             const second = date.getSeconds();
             recordMessage['dateTime'] = `${day}${month}${year}${hour}${minute}${second}`;
             recordMessage['dateSplit'] = `${day}-${month}-${year}-${hour}-${minute}-${second}`;
-            this.helpService.addMessage(recordMessage, data.companyId, data.uid).then(() => {
+            this.helpService.addMessage(recordMessage, data.companyId, this.userId).then(() => {
               this.existRoomSubs.unsubscribe();
               this.messageForm.reset();
             });
@@ -104,7 +93,7 @@ export class HelpPage implements OnInit {
             recordRoom['userphone'] = data.phone;
             recordRoom['userId'] = data.uid;
             recordRoom['companyId'] = data.companyId;
-            this.helpService.addRoom(data.companyId, recordRoom, data.uid).then(() => {
+            this.helpService.addRoom(data.companyId, recordRoom, this.userId).then(() => {
               const recordMessage = {};
               recordMessage['message'] = this.messageForm.get('text_message').value;
               recordMessage['read'] = false;
@@ -118,7 +107,7 @@ export class HelpPage implements OnInit {
               const second = date.getSeconds();
               recordMessage['dateTime'] = `${day}${month}${year}${hour}${minute}${second}`;
               recordMessage['dateSplit'] = `${day}-${month}-${year}-${hour}-${minute}-${second}`;
-              this.helpService.addMessage(recordMessage, data.companyId, data.uid).then(() => {
+              this.helpService.addMessage(recordMessage, data.companyId, this.userId).then(() => {
                 this.existRoomSubs.unsubscribe();
                 this.messageForm.reset();
               });
@@ -127,14 +116,6 @@ export class HelpPage implements OnInit {
         });
       });
     }
-  }
-
-  async presentToast(msj) {
-    const toast = await this.toastController.create({
-      message: msj,
-      duration: 2000
-    });
-    toast.present();
   }
 
 }

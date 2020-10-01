@@ -113,7 +113,6 @@ const routes: Routes = [
     loadChildren: () => import('./components/home/trip-details/trip-details.module').then( m => m.TripDetailsPageModule),
     canActivate: [AuthGuard]
   },
-
 ];
 
 @NgModule({

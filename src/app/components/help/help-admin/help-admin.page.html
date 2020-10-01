@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-back-button slot="start" defaultHref="#"></ion-back-button>
+    <ion-title>{{userName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let message of messageList; let index = index">
+    <div id="{{index}}" *ngIf="message.role == 'passenger'">
+      <ion-row class="chatContent ion-no-padding">
+        <ion-col [size]=12>
+          <div class="chat-column customer">
+            <div class="item">
+              <div class="chat-message">{{message.message}}</div>
+              <!-- <div class="message-date">{{today | date:'short'}}</div> -->
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col [size]="12" class="ion-text-left chat-column customer">
+          <div class="item">
+            <div class="message-date">{{convertUnixToDate(message.dateSplit)}}</div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div id="{{index}}" *ngIf="message.role == 'admin'">
+      <ion-row class="chatContent ion-no-padding">
+        <ion-col [size]=12>
+          <div class="chat-column company">
+            <div class="item">
+              <div class="chat-message">{{message.message}}</div>
+              <!-- <div class="message-date">{{today | date:'short'}}</div> -->
+            </div>
+          </div>
+        </ion-col>
+        <ion-col [size]="12" class="ion-text-left chat-column company">
+          <div class="item">
+            <div class="message-date">{{convertUnixToDate(message.dateSplit)}}</div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="no-padding btn-finish">
+  <!-- BEGIN : chatSend -->
+  <form [formGroup]="messageForm">
+    <div class="chatSend">
+      <input type="text" class="sendText" formControlName="text_message" placeholder="Enviar Mensaje">
+      <div id="send-message" (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </div>
+    </div>
+  </form>
+  <!-- END : chatSend -->
+</ion-footer>
