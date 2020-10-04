@@ -1,8 +1,8 @@
 {
-  "name": "miTransporte",
+  "name": "MiFlota",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Bryan Sabillon",
+  "homepage": "http://www.miflotaapp.com/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -73,7 +73,7 @@
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
   },
-  "description": "An Ionic project",
+  "description": "Aplicación para gestión de flotas, talento humano y clientes.",
   "cordova": {
     "plugins": {
       "cordova-sqlite-storage": {},

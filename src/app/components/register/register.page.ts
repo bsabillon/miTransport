@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user.class';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-// import { threadId } from 'worker_threads';
 import { Storage } from '@ionic/storage';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
