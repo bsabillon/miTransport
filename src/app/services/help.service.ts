@@ -30,6 +30,6 @@ export class HelpService {
   }
 
   getMessage(companyId, userId): Observable<any[]> {
-    return this.afStore.collection('help').doc(`help_${companyId}${userId}`).collection('messages', ref => ref.orderBy('dateTime', "desc")).valueChanges();
+    return this.afStore.collection('help').doc(`help_${companyId}${userId}`).collection('messages', ref => ref.orderBy('dateTime')).valueChanges();
   }
 }
