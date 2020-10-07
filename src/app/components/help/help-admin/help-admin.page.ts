@@ -105,7 +105,7 @@ export class HelpAdminPage implements OnInit {
               const hour = date.getHours();
               const minute = date.getMinutes();
               const second = date.getSeconds();
-              recordMessage['dateTime'] = `${year}${month}${day}${hour}${minute}${second}`;
+              recordMessage['dateTime'] = parseInt( `${year}${month}${day}${hour}${minute}${second}`) ;
               recordMessage['dateSplit'] = `${year}-${month}-${day}-${hour}-${minute}-${second}`;
               this.helpService.addMessage(recordMessage, data.companyId, this.userId).then(() => {
                 this.existRoomSubs.unsubscribe();
