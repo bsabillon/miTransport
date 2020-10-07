@@ -80,7 +80,4 @@ export class TripsService {
     this.tripDoc = this.afStore.doc<Trip>(`trips/${tripId}`);
     this.tripDoc.delete(); 
   }
-
-
-
 }

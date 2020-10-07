@@ -19,7 +19,7 @@ export class PassengersService {
     )
     { 
     const currentCompany = this.authService.currentUser.companyId; 
-    this.usersCollection = this.afStore.collection<User>('users', ref => ref.where('companyId','==',currentCompany ))
+    this.usersCollection = this.afStore.collection<User>('users', ref => ref.where('companyId','==',currentCompany) && ref.where('role','==', 'passenger'))
     this.users = this.usersCollection.valueChanges();
 
   }
