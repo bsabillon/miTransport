@@ -18,7 +18,7 @@ export class DriversService {
     )
     { 
     const currentCompany = this.authService.currentUser.companyId; 
-    this.driversCollection = this.afStore.collection<Driver>('drivers', ref => ref.where('companyId','==',currentCompany ));
+    this.driversCollection = this.afStore.collection<Driver>('users', ref => ref.where('companyId','==',currentCompany )&& ref.where('role','==', 'driver'));
     this.drivers = this.driversCollection.valueChanges();
   }
 

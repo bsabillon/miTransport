@@ -24,7 +24,8 @@
     <ion-item lines="none">
       <ion-icon name="people" slot="start"></ion-icon>
       <ion-label>{{trip.driver}}</ion-label>
-      <ion-button fill="outline" *ngIf="canEnroll" slot="end">Inscribirse</ion-button>
+      <ion-button fill="outline" *ngIf="canEnroll" (click)="enrollAlert()" slot="end">Inscribirse</ion-button>
+      <ion-button fill="outline" *ngIf="!canEnroll" disabled slot="end">Inscrito</ion-button>
     </ion-item>
    
   </ion-card>

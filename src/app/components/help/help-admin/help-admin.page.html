@@ -5,7 +5,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   <div *ngFor="let message of messageList; let index = index">
     <div id="{{index}}" *ngIf="message.role == 'passenger'">
       <ion-row class="chatContent ion-no-padding">

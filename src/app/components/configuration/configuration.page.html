@@ -15,7 +15,18 @@
   </ion-header>
 
   <div id="container">
-    <ion-button expand="block">Proximamente</ion-button>
+    <ion-item (click)="editName()">
+      <ion-text>Nombre: {{user.name}}</ion-text>
+      <ion-icon slot="end" name="create"></ion-icon>
+    </ion-item>
+    <ion-item (click)="editPhone()">
+      <ion-text>Celular: {{user.phone}}</ion-text>
+      <ion-icon slot="end" name="create"></ion-icon>
+    </ion-item>
+    <ion-item (click)="privacyPolicies()">
+      <ion-text>Políticas De Privacidad</ion-text>
+      <ion-icon slot="end" name="chevron-forward"></ion-icon>
+    </ion-item>
     
   </div>
 </ion-content>

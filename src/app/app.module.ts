@@ -24,6 +24,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import localeESHN from '@angular/common/locales/es-HN';
 import { registerLocaleData } from '@angular/common';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 registerLocaleData(localeESHN, 'es-HN');
 
@@ -46,6 +47,7 @@ registerLocaleData(localeESHN, 'es-HN');
     StatusBar,
     GoogleMaps,
     Diagnostic,
+    InAppBrowser,
     Geolocation,
     LocationAccuracy,
     GooglemapsServiceService,

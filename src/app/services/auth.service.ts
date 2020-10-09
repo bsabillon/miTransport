@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { User } from '../models/user.class';
@@ -158,5 +158,13 @@ export class AuthService {
   //   }
   //   return userRef.set(data,{merge:true})
   // }
+
+  updateUserName(userName, uid) {
+    return this.afs.collection('users').doc(uid).update({name: userName});
+  }
+
+  updateUserPhone(userPhone, uid) {
+    return this.afs.collection('users').doc(uid).update({phone: userPhone});
+  }
 
 }

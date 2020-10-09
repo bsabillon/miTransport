@@ -80,7 +80,7 @@ export class HelpAdminPage implements OnInit {
             const hour = date.getHours();
             const minute = date.getMinutes();
             const second = date.getSeconds();
-            recordMessage['dateTime'] = parseInt( `${(year < 10) ? `0${year}` : year}${month}${(day < 10)? `0${day}` : day}${hour}${minute}${second}`) ;
+            recordMessage['dateTime'] = parseInt( `${(year < 10) ? `0${year}` :year}${(month<10) ? `0${month}` :month}${(day < 10)? `0${day}` : day}${(hour<10)? `0${hour}` :hour}${(minute<10)? `0${minute}` :minute}${(second<10)? `0${second}` :second}`) ;
             recordMessage['dateSplit'] = `${year}-${month}-${day}-${hour}-${minute}-${second}`;
             this.helpService.addMessage(recordMessage, data.companyId, this.userId).then(() => {
               this.existRoomSubs.unsubscribe();
@@ -105,7 +105,7 @@ export class HelpAdminPage implements OnInit {
               const hour = date.getHours();
               const minute = date.getMinutes();
               const second = date.getSeconds();
-              recordMessage['dateTime'] = parseInt( `${(year < 10) ? `0${year}` : year}${month}${(day < 10)? `0${day}` : day}${hour}${minute}${second}`);
+              recordMessage['dateTime'] = parseInt( `${(year < 10) ? `0${year}` :year}${(month<10) ? `0${month}` :month}${(day < 10)? `0${day}` : day}${(hour<10)? `0${hour}` :hour}${(minute<10)? `0${minute}` :minute}${(second<10)? `0${second}` :second}`) ;
               recordMessage['dateSplit'] = `${year}-${month}-${day}-${hour}-${minute}-${second}`;
               this.helpService.addMessage(recordMessage, data.companyId, this.userId).then(() => {
                 this.existRoomSubs.unsubscribe();
