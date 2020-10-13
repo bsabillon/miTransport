@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AuthService } from 'src/app/services/auth.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 @Component({
   selector: 'app-configuration',
@@ -16,6 +17,8 @@ export class ConfigurationPage implements OnInit {
     public alertController: AlertController,
     private authService: AuthService,
     private iab: InAppBrowser,
+    private clipboard: Clipboard,
+    public toastController: ToastController,
   ) { }
 
   ngOnInit() {
@@ -36,6 +39,17 @@ export class ConfigurationPage implements OnInit {
     });
 
     browser.close();
+  }
+
+  copyIdCompany() {
+    this.storage.get('userAuth').then((data) => {
+      this.user = data;
+      console.log(this.user);
+      this.clipboard.copy(this.user.companyId).then((result) => {
+        console.log(result);
+        this.presentToast('¡Copiado al portapapeles!');
+      });
+    });
   }
 
   getUser() {
@@ -107,6 +121,14 @@ export class ConfigurationPage implements OnInit {
         this.getUser();
       });
     });
+  }
+
+  async presentToast(msj) {
+    const toast = await this.toastController.create({
+      message: msj,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

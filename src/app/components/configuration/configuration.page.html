@@ -23,6 +23,10 @@
       <ion-text>Celular: {{user.phone}}</ion-text>
       <ion-icon slot="end" name="create"></ion-icon>
     </ion-item>
+    <ion-item (click)="copyIdCompany()">
+      <ion-text>Copiar Id De La Empresa</ion-text>
+      <ion-icon slot="end" color="primary" name="clipboard"></ion-icon>
+    </ion-item>
     <ion-item (click)="privacyPolicies()">
       <ion-text>Políticas De Privacidad</ion-text>
       <ion-icon slot="end" name="chevron-forward"></ion-icon>

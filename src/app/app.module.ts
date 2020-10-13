@@ -25,6 +25,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import localeESHN from '@angular/common/locales/es-HN';
 import { registerLocaleData } from '@angular/common';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 registerLocaleData(localeESHN, 'es-HN');
 
@@ -52,6 +53,7 @@ registerLocaleData(localeESHN, 'es-HN');
     LocationAccuracy,
     GooglemapsServiceService,
     Geocoder,
+    Clipboard,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
