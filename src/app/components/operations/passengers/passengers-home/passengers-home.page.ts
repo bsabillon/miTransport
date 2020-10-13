@@ -27,6 +27,10 @@ export class PassengersHomePage implements OnInit {
     });
   }
 
+  deleteUser(uid) {
+    this.userServices.deleteUser(uid);
+  }
+
 
 
 

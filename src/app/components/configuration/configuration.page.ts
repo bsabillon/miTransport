@@ -29,7 +29,7 @@ export class ConfigurationPage implements OnInit {
   }
 
   privacyPolicies() {
-    const browser = this.iab.create('https://ionicframework.com/');
+    const browser = this.iab.create('https://www.miflotaapp.com/');
 
     // browser.executeScript(...);
 

@@ -3,7 +3,7 @@
     <name>MiFlota</name>
     <description>Aplicación para gestión de flotas, talento humano y clientes.</description>
     <author email="bryan.sabillon@miflotaapp.com" href="http://www.miflotaapp.com/">Equipo de MiFlota</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
