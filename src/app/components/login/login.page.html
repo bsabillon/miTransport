@@ -58,6 +58,8 @@
     <ion-input [(ngModel)]="user.password" type="password" name="password"></ion-input>
   </ion-item> -->
 
+  <p class="forgotPassword" (click)="forgotPassword()">¡Olvidé la contraseña!</p>
+
     <ion-button class="login" expand="block" type="submit" [disabled]="!loginForm.valid"> Iniciar Sesión
     </ion-button>
 

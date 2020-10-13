@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthService } from '../../services/auth.service';
-import {User } from '../../models/user.class';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user.class';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { NavController, AlertController, LoadingController, MenuController } from '@ionic/angular';
+import { NavController, AlertController, LoadingController, MenuController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ export class LoginPage implements OnInit, OnDestroy {
     ],
     password: [
       { type: 'required', message: 'Contraseña es requerida.' },
-      { type: 'minlength', message: 'La contraseña debe tener al menos 6 dígitos.'}
+      { type: 'minlength', message: 'La contraseña debe tener al menos 6 dígitos.' }
     ]
   };
 
@@ -33,30 +33,31 @@ export class LoginPage implements OnInit, OnDestroy {
   // Variable para cambiar dinamicamente el nombre del Icono que por defecto sera un ojo cerrado
 
   constructor(
-    public authService: AuthService, 
+    public authService: AuthService,
     private router: Router,
     public alertController: AlertController,
     public loadingController: LoadingController,
     private storage: Storage,
+    public toastController: ToastController,
     private navCtrl: NavController,
     public menuCtrl: MenuController,
     public formBuilder: FormBuilder,
-    ) {
-      this.loginForm = this.formBuilder.group({
-        email: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
-        ])),
-        password: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.minLength(5),
-        ])),
-      });
-     }
+  ) {
+    this.loginForm = this.formBuilder.group({
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'),
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(5),
+      ])),
+    });
+  }
 
-     ngOnDestroy() {
-     ((this.getUserSubscription) !== undefined ? this.getUserSubscription.unsubscribe() : '');
-    }
+  ngOnDestroy() {
+    ((this.getUserSubscription) !== undefined ? this.getUserSubscription.unsubscribe() : '');
+  }
 
   ngOnInit() {
   }
@@ -65,14 +66,14 @@ export class LoginPage implements OnInit, OnDestroy {
     this.menuCtrl.enable(false);
   }
 
-  async onLogin(){
+  async onLogin() {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Por favor espere...',
     });
     loading.present();
     const user = {};
-      this.authService.loginUser(this.loginForm.value)
+    this.authService.loginUser(this.loginForm.value)
       .then((res) => {
         user['email'] = res.user.email;
         user['uid'] = res.user.uid;
@@ -83,10 +84,10 @@ export class LoginPage implements OnInit, OnDestroy {
         console.log(error);
         this.presentAlert();
       });
-    }
-    
-    getUser(user) {
-      this.getUserSubscription = 
+  }
+
+  getUser(user) {
+    this.getUserSubscription =
       this.authService.getUser(this.loginForm.get('email').value).subscribe(data => {
         let person = {};
         person = data.map(e => {
@@ -124,6 +125,35 @@ export class LoginPage implements OnInit, OnDestroy {
   togglePasswordMode() {
     this.passwordTypeInput = this.passwordTypeInput === 'text' ? 'password' : 'text';
     this.iconpassword = this.iconpassword === 'eye-off' ? 'eye' : 'eye-off';
+  }
+
+  async forgotPassword() {
+    const alert = await this.alertController.create({
+      message: `Se enviará el link para reestablecer la contraseña al correo: ${this.loginForm.get('email').value}`,
+      mode: 'ios',
+
+      buttons: [{ text: 'Cancelar', role: 'cancel' }, {
+        text: 'Enviar', handler: (data) => {
+          this.authService.passwordRecovery(this.loginForm.get('email').value).then((data) => {
+            this.presentToast('Se envio el link correctamente.');
+          }, (error) => {
+            this.presentToast('El link no pudo ser enviado.');
+
+          });
+        }
+      }]
+    });
+    if (this.loginForm.get('email').value) {
+      await alert.present();
+    }
+  }
+
+  async presentToast(msj) {
+    const toast = await this.toastController.create({
+      message: msj,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }
